@@ -47,42 +47,55 @@ function Videos({ mode, callId, setPage }) {
   //Remote video
   const remoteRef = useRef();
 
+  //Function to set up video stream
   const setupSources = async () => {
+    //Get user's camera and audio
     const localStream = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true,
     });
     const remoteStream = new MediaStream();
 
+    //Add the local tracks to the WebRTC peer connection
     localStream.getTracks().forEach((track) => {
       pc.addTrack(track, localStream);
     });
 
+    //Listen to the onTrack even on the peer conneciton, add tracks to the remote stream
     pc.ontrack = (event) => {
       event.streams[0].getTracks().forEach((track) => {
         remoteStream.addTrack(track);
       });
     };
 
+    //Set the streams as source for local and remote refs
     localRef.current.srcObject = localStream;
     remoteRef.current.srcObject = remoteStream;
 
     setWebcamActive(true);
 
+    // To create a Call (Offer Signaling)
     if (mode === "create") {
+      //Creating a new document in Firestore calls collection to store information about the calls
       const callDoc = firestore.collection("calls").doc();
+      //References for answer and offer ICE canidates
       const offerCandidates = callDoc.collection("offerCandidates");
       const answerCandidates = callDoc.collection("answerCandidates");
 
+      //Set the room ID as the Id property of the call document
       setRoomId(callDoc.id);
 
+      //When ICE canidate is generated add them
       pc.onicecandidate = (event) => {
         event.candidate && offerCandidates.add(event.candidate.toJSON());
       };
 
+      //Await the create Offer method
       const offerDescription = await pc.createOffer();
+      //Set as local description of peer connection
       await pc.setLocalDescription(offerDescription);
 
+      //Create offer to be saved to firestore
       const offer = {
         sdp: offerDescription.sdp,
         type: offerDescription.type,
@@ -90,38 +103,49 @@ function Videos({ mode, callId, setPage }) {
 
       await callDoc.set({ offer });
 
+      //Listen to changes to document to get answer SDP
       callDoc.onSnapshot((snapshot) => {
         const data = snapshot.data();
         if (!pc.currentRemoteDescription && data?.answer) {
           const answerDescription = new RTCSessionDescription(data.answer);
+          //Set the data to the remote description
           pc.setRemoteDescription(answerDescription);
         }
       });
 
+      //Listen for ICE canidates when answerCanidates changes
       answerCandidates.onSnapshot((snapshot) => {
         snapshot.docChanges().forEach((change) => {
           if (change.type === "added") {
             const candidate = new RTCIceCandidate(change.doc.data());
+            //Add the canidates to the peer connection
             pc.addIceCandidate(candidate);
           }
         });
       });
+      //Answering the call
     } else if (mode === "join") {
+      //Create reference using the call ID
       const callDoc = firestore.collection("calls").doc(callId);
+      //ICE Canidates
       const answerCandidates = callDoc.collection("answerCandidates");
       const offerCandidates = callDoc.collection("offerCandidates");
 
+      //Listen for the ICE canidates
       pc.onicecandidate = (event) => {
         event.candidate && answerCandidates.add(event.candidate.toJSON());
       };
 
       const callData = (await callDoc.get()).data();
 
+      //Read offer description from document
       const offerDescription = callData.offer;
+      //Set as the remote description
       await pc.setRemoteDescription(
         new RTCSessionDescription(offerDescription)
       );
 
+      //Create local description
       const answerDescription = await pc.createAnswer();
       await pc.setLocalDescription(answerDescription);
 
@@ -130,11 +154,14 @@ function Videos({ mode, callId, setPage }) {
         sdp: answerDescription.sdp,
       };
 
+      //Wrote the answer description to the database
       await callDoc.update({ answer });
 
+      //Listen to changes to offer candidates collection
       offerCandidates.onSnapshot((snapshot) => {
         snapshot.docChanges().forEach((change) => {
           if (change.type === "added") {
+            //Add data to peer connection
             let data = change.doc.data();
             pc.addIceCandidate(new RTCIceCandidate(data));
           }
@@ -142,6 +169,7 @@ function Videos({ mode, callId, setPage }) {
       });
     }
 
+    //Call hang up function when peer connection disconnects
     pc.onconnectionstatechange = (event) => {
       if (pc.connectionState === "disconnected") {
         hangUp();
@@ -149,9 +177,12 @@ function Videos({ mode, callId, setPage }) {
     };
   };
 
+  //Hang up Function
   const hangUp = async () => {
+    //Close the peer connection
     pc.close();
 
+    //Delete subcollections
     if (roomId) {
       let roomRef = firestore.collection("calls").doc(roomId);
       await roomRef
@@ -171,9 +202,11 @@ function Videos({ mode, callId, setPage }) {
           });
         });
 
+      //Delete document
       await roomRef.delete();
     }
 
+    //Refresh page
     window.location.reload();
   };
 

@@ -53,15 +53,6 @@ function App() {
       )}
     </div>
   );
-
-  // return (
-  //   <>
-  //     <VideoContainer>
-  //       <VideoStream id="user-1" autoPlay playsInline></VideoStream>
-  //       <VideoStream id="user-2" autoPlay playsInline></VideoStream>
-  //     </VideoContainer>
-  //   </>
-  // );
 }
 
 export default App;
