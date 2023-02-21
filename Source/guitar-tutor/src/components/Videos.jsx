@@ -10,6 +10,8 @@ import { ReactComponent as HangupIcon } from "./icons/hangup.svg";
 import { ReactComponent as MoreIcon } from "./icons/more-vertical.svg";
 import { ReactComponent as CopyIcon } from "./icons/copy.svg";
 
+import MultiStreamsMixer from "multistreamsmixer";
+
 export const VideoContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -47,28 +49,130 @@ function Videos({ mode, callId, setPage }) {
   //Remote video
   const remoteRef = useRef();
 
+  // const setupSources = async () => {
+  //   //Get user's camera and audio from two separate audio input devices, if available
+  //   let audioMixer;
+  //   const audioDevices = await navigator.mediaDevices
+  //     .enumerateDevices()
+  //     .then((devices) =>
+  //       devices.filter((device) => device.kind === "audioinput")
+  //     );
+
+  //   let audioConstraints;
+
+  //   if (audioDevices.length >= 2) {
+  //     console.log("You have 2 or more audio inputs");
+  //     // use two separate audio input devices
+  //     const audio1 = audioDevices[0].deviceId;
+  //     const audio2 = audioDevices[1].deviceId;
+  //     console.log("Input one is: " + audio1);
+  //     console.log("Input two is: " + audio2);
+
+  //     // audioConstraints = {
+  //     //   audio: [{ deviceId: audio1 }, { deviceId: audio2 }],
+  //     // };
+  //     audioMixer = new MultiStreamsMixer([audio1, audio2]);
+  //   } else if (audioDevices.length === 1) {
+  //     // use the single available audio input device
+  //     console.log("You have 1 audio input");
+  //     audioConstraints = {
+  //       audio: {
+  //         deviceId: audioDevices[0].deviceId,
+  //       },
+  //     };
+  //   } else {
+  //     console.error("Could not find any audio input devices.");
+  //     return;
+  //   }
+
+  //   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  //   const localStream = await navigator.mediaDevices.getUserMedia({
+  //     video: true,
+  //     ...audioMixer,
+  //   });
+  //   const remoteStream = new MediaStream();
+
+  //   //Add the local tracks to the WebRTC peer connection
+  //   localStream.getTracks().forEach(async (track) => {
+  //     if (track.kind === "audio") {
+  //       const source = audioCtx.createMediaStreamSource(localStream);
+  //       const dest = audioCtx.createMediaStreamDestination();
+  //       source.connect(dest);
+  //       const resampledTrack = dest.stream.getAudioTracks()[0];
+  //       pc.addTrack(resampledTrack, localStream);
+  //     } else {
+  //       pc.addTrack(track, localStream);
+  //     }
+  //   });
+
+  //   //Listen to the onTrack even on the peer conneciton, add tracks to the remote stream
+  //   pc.ontrack = (event) => {
+  //     event.streams[0].getTracks().forEach((track) => {
+  //       remoteStream.addTrack(track);
+  //     });
+  //   };
+
+  //   //Set the streams as source for local and remote refs
+  //   localRef.current.srcObject = localStream;
+  //   remoteRef.current.srcObject = remoteStream;
+
+  //   setWebcamActive(true);
+
   //Function to set up video stream
   const setupSources = async () => {
-    //Get user's camera and audio
+    // Get user's camera and audio
     const localStream = await navigator.mediaDevices.getUserMedia({
       video: true,
+      // audio: true,
+    });
+
+    // Get user's  audio
+    const audioInput1 = await navigator.mediaDevices.getUserMedia({
       audio: true,
     });
+    console.log("Input one is: " + audioInput1);
+    // Get user's camera and audio
+    const audioInput2 = await navigator.mediaDevices.getUserMedia({
+      audio: true,
+    });
+    console.log("Input two is: " + audioInput2);
+
+    const audioMixer = new MultiStreamsMixer([audioInput1, audioInput2]);
+
+    // // Get second audio input
+    // const secondAudioStream = await navigator.mediaDevices.getUserMedia({
+    //   audio: true,
+    // });
+
+    // // Combine the two audio streams into a single MediaStream
+    // const audioTracks = [
+    //   ...localStream.getAudioTracks(),
+    //   ...secondAudioStream.getAudioTracks(),
+    // ];
+    // const audioStream = new MediaStream(audioTracks);
+
     const remoteStream = new MediaStream();
 
-    //Add the local tracks to the WebRTC peer connection
+    // Add the local tracks to the WebRTC peer connection
     localStream.getTracks().forEach((track) => {
       pc.addTrack(track, localStream);
     });
 
-    //Listen to the onTrack even on the peer conneciton, add tracks to the remote stream
+    pc.addStream(audioMixer.getMixedStream());
+
+    // // Add the second audio stream to the WebRTC peer connection
+    // secondAudioStream.getTracks().forEach((track) => {
+    //   pc.addTrack(track, audioStream);
+    // });
+
+    // Listen to the onTrack even on the peer conneciton, add tracks to the remote stream
     pc.ontrack = (event) => {
       event.streams[0].getTracks().forEach((track) => {
         remoteStream.addTrack(track);
       });
     };
 
-    //Set the streams as source for local and remote refs
+    // Set the streams as source for local and remote refs
     localRef.current.srcObject = localStream;
     remoteRef.current.srcObject = remoteStream;
 
