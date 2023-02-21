@@ -1,3 +1,5 @@
+import Amp from "./Amp";
+
 function Menu({ joinCode, setJoinCode, setPage }) {
   return (
     <div className="home">
@@ -13,6 +15,7 @@ function Menu({ joinCode, setJoinCode, setPage }) {
         />
         <button onClick={() => setPage("join")}>Answer</button>
       </div>
+      <Amp />
     </div>
   );
 }
