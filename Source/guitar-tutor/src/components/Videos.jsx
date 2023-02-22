@@ -18,7 +18,6 @@ export const VideoContainer = styled.div`
 
 export const VideoStream = styled.video`
   background-color: black;
-
   height: 300px;
 `;
 
@@ -47,43 +46,28 @@ function Videos({ mode, callId, setPage }) {
   //Remote video
   const remoteRef = useRef();
 
+  //Function to set up video stream
   const setupSources = async () => {
-    const audioDevices = await navigator.mediaDevices.enumerateDevices();
-    const audioConstraints = {
-      audio: {
-        deviceId: audioDevices.filter(
-          (device) => device.kind === "audioinput"
-        )[0].deviceId,
-      },
-    };
+    //Get user's camera and audio
     const localStream = await navigator.mediaDevices.getUserMedia({
       video: true,
-      ...audioConstraints,
+      audio: true,
     });
     const remoteStream = new MediaStream();
 
-    const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const localAudioSource1 = audioCtx.createMediaStreamSource(localStream);
-    const localAudioSource2 = audioCtx.createMediaStreamSource(localStream);
-    const merger = audioCtx.createChannelMerger(2);
+    //Add the local tracks to the WebRTC peer connection
+    localStream.getTracks().forEach((track) => {
+      pc.addTrack(track, localStream);
+    });
 
-    localAudioSource1.connect(merger);
-    localAudioSource2.connect(merger, 0, 1);
-
-    const mixedStream = merger.context.createMediaStreamDestination();
-    merger.connect(mixedStream);
-
-    const mixedTrack = mixedStream.stream.getAudioTracks()[0];
-    pc.addTrack(mixedTrack, localStream);
-
-    // Listen to the onTrack event on the peer connection, add tracks to the remote stream
+    //Listen to the onTrack even on the peer conneciton, add tracks to the remote stream
     pc.ontrack = (event) => {
       event.streams[0].getTracks().forEach((track) => {
         remoteStream.addTrack(track);
       });
     };
 
-    // Set the streams as source for local and remote refs
+    //Set the streams as source for local and remote refs
     localRef.current.srcObject = localStream;
     remoteRef.current.srcObject = remoteStream;
 

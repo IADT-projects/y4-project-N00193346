@@ -14,6 +14,7 @@ export const Container = styled.div`
 `;
 
 function Amp() {
+  const [onButton, setOn] = useState(0);
   const [volume, setVolume] = useState(0.5);
   const [bass, setBass] = useState(0);
   const [mid, setMid] = useState(0);
@@ -105,13 +106,16 @@ function Amp() {
     source.connect(trebleEQ);
   };
 
-  setupContext();
-  handleBassChange();
-  handleMidChange();
-  handleTrebleChange();
+  if (onButton === 1) {
+    setupContext();
+    handleBassChange();
+    handleMidChange();
+    handleTrebleChange();
+  }
 
   return (
     <>
+      <button onClick={() => setOn(1)}>Turn On Amplifer</button>
       <Container>
         <RangeInput
           labelFor="Volume"

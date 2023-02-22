@@ -8,6 +8,7 @@ import "firebase/firestore";
 
 import Menu from "./components/Menu";
 import Videos from "./components/Videos";
+import Amp from "./components/Amp";
 
 export const VideoContainer = styled.div`
   display: grid;
@@ -51,6 +52,7 @@ function App() {
       ) : (
         <Videos mode={currentPage} callId={joinCode} setPage={setCurrentPage} />
       )}
+      <Amp />
     </div>
   );
 }
