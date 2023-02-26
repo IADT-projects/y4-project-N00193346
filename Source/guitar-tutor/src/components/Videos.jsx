@@ -48,11 +48,18 @@ function Videos({ mode, callId, setPage }) {
 
   //Function to set up video stream
   const setupSources = async () => {
-    //Get user's camera and audio
+    //Get user's camera and microphone
     const localStream = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true,
     });
+
+    //Get audio from user's desktop
+    const desktopStream = await navigator.mediaDevices.getDisplayMedia({
+      video: true,
+      audio: true,
+    });
+
     const remoteStream = new MediaStream();
 
     //Add the local tracks to the WebRTC peer connection
@@ -60,7 +67,12 @@ function Videos({ mode, callId, setPage }) {
       pc.addTrack(track, localStream);
     });
 
-    //Listen to the onTrack even on the peer conneciton, add tracks to the remote stream
+    //Add desktop audio to the WebRTC peer connection
+    desktopStream.getAudioTracks().forEach((track) => {
+      pc.addTrack(track, desktopStream);
+    });
+
+    //Listen to the onTrack event on the peer connection, add tracks to the remote stream
     pc.ontrack = (event) => {
       event.streams[0].getTracks().forEach((track) => {
         remoteStream.addTrack(track);
