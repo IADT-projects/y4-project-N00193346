@@ -5,7 +5,7 @@ import "firebase/compat/auth";
 import "firebase/compat/firestore";
 import "firebase/firestore";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { ReactComponent as HangupIcon } from "./icons/hangup.svg";
 import { ReactComponent as MoreIcon } from "./icons/more-vertical.svg";
 import { ReactComponent as CopyIcon } from "./icons/copy.svg";
@@ -21,7 +21,71 @@ export const VideoStream = styled.video`
   height: 300px;
 `;
 
+let guitarStream;
+
+function startGuitarStream() {
+  navigator.mediaDevices
+    .getUserMedia({
+      audio: {
+        echoCancellation: false,
+        autoGainControl: false,
+        noiseSuppression: false,
+        latency: 0,
+      },
+    })
+    .then((stream) => {
+      guitarStream = stream;
+      // Use the guitarStream here
+    })
+    .catch((error) => {
+      console.log("Error accessing microphone:", error);
+    });
+}
+
+// Call startGuitarStream() when you want to start the guitar stream
+startGuitarStream();
+
 function Videos({ mode, callId, setPage }) {
+  // const [volume, setVolume] = useState(1);
+
+  // const context = new AudioContext();
+  // const gainNode = new GainNode(context, { gain: volume });
+
+  // useEffect(() => {
+  //   gainNode.connect(context.destination);
+  //   gainNode.addEventListener("gainchange", handleGainChange);
+  //   return () => {
+  //     gainNode.removeEventListener("gainchange", handleGainChange);
+  //     gainNode.disconnect();
+  //   };
+  // }, [gainNode]);
+  // const handleGainChange = () => {
+  //   console.log("Gain changed: ", gainNode.gain.value);
+  // };
+
+  // // Getting the guitar input
+  // const setupGuitar = () => {
+  //   return navigator.mediaDevices.getUserMedia({
+  //     audio: {
+  //       echoCancellation: false,
+  //       autoGainControl: false,
+  //       noiseSuppression: false,
+  //       latency: 0,
+  //     },
+  //   });
+  // };
+
+  // const setupContext = async () => {
+  //   const guitar = await setupGuitar();
+  //   if (context.state === "suspended") {
+  //     await context.resume();
+  //   }
+  //   const source = context.createMediaStreamSource(guitar);
+  //   source.connect(gainNode);
+  // };
+
+  // setupContext();
+
   const firestore = firebase.firestore();
   const servers = {
     iceServers: [
@@ -54,22 +118,37 @@ function Videos({ mode, callId, setPage }) {
       audio: true,
     });
 
-    //Get audio from user's desktop
-    const desktopStream = await navigator.mediaDevices.getDisplayMedia({
-      video: true,
-      audio: true,
+    var ctx = new AudioContext();
+    var source = ctx.createMediaStreamSource(guitarStream);
+    var gainNode = ctx.createGain();
+    gainNode.gain.value = 0.5;
+    source.connect(gainNode);
+    source.connect(ctx.destination);
+
+    // create a new MediaStream object
+    const newStream = new MediaStream();
+
+    // add the guitarStream to the new MediaStream object
+    guitarStream.getAudioTracks().forEach((track) => {
+      newStream.addTrack(track);
     });
+
+    // create a new audio track using the new MediaStream object
+    const audioTrack = newStream.getTracks()[0];
+    const audioSender = pc.addTrack(audioTrack, newStream);
+
+    // set the audio track's sender to "inactive" so that it can't be heard by the recipient
+    if (audioSender && audioSender.sender) {
+      audioSender.sender.replaceTrack(null);
+    } else {
+      console.log("audioSender or audioSender.sender is undefined");
+    }
 
     const remoteStream = new MediaStream();
 
     //Add the local tracks to the WebRTC peer connection
     localStream.getTracks().forEach((track) => {
       pc.addTrack(track, localStream);
-    });
-
-    //Add desktop audio to the WebRTC peer connection
-    desktopStream.getAudioTracks().forEach((track) => {
-      pc.addTrack(track, desktopStream);
     });
 
     //Listen to the onTrack event on the peer connection, add tracks to the remote stream

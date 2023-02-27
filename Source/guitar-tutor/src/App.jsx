@@ -1,6 +1,7 @@
 import styled from "styled-components";
+import React, { useState, useEffect, useRef } from "react";
+import adapter from "webrtc-adapter";
 
-import { useState } from "react";
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
 import "firebase/compat/firestore";
@@ -41,6 +42,8 @@ function App() {
   //Code used to answer call
   const [joinCode, setJoinCode] = useState("");
 
+  console.log("Browser: " + adapter.browserDetails.version);
+
   return (
     <div className="app">
       {currentPage === "home" ? (
@@ -52,6 +55,7 @@ function App() {
       ) : (
         <Videos mode={currentPage} callId={joinCode} setPage={setCurrentPage} />
       )}
+
       <Amp />
     </div>
   );
