@@ -55,8 +55,6 @@ function App() {
       ) : (
         <Videos mode={currentPage} callId={joinCode} setPage={setCurrentPage} />
       )}
-
-      <Amp />
     </div>
   );
 }

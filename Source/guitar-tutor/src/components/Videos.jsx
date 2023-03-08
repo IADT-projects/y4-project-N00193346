@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Amp from "./Amp";
 
 import firebase from "firebase/compat/app";
 import "firebase/compat/auth";
@@ -21,71 +22,7 @@ export const VideoStream = styled.video`
   height: 300px;
 `;
 
-let guitarStream;
-
-function startGuitarStream() {
-  navigator.mediaDevices
-    .getUserMedia({
-      audio: {
-        echoCancellation: false,
-        autoGainControl: false,
-        noiseSuppression: false,
-        latency: 0,
-      },
-    })
-    .then((stream) => {
-      guitarStream = stream;
-      // Use the guitarStream here
-    })
-    .catch((error) => {
-      console.log("Error accessing microphone:", error);
-    });
-}
-
-// Call startGuitarStream() when you want to start the guitar stream
-startGuitarStream();
-
 function Videos({ mode, callId, setPage }) {
-  // const [volume, setVolume] = useState(1);
-
-  // const context = new AudioContext();
-  // const gainNode = new GainNode(context, { gain: volume });
-
-  // useEffect(() => {
-  //   gainNode.connect(context.destination);
-  //   gainNode.addEventListener("gainchange", handleGainChange);
-  //   return () => {
-  //     gainNode.removeEventListener("gainchange", handleGainChange);
-  //     gainNode.disconnect();
-  //   };
-  // }, [gainNode]);
-  // const handleGainChange = () => {
-  //   console.log("Gain changed: ", gainNode.gain.value);
-  // };
-
-  // // Getting the guitar input
-  // const setupGuitar = () => {
-  //   return navigator.mediaDevices.getUserMedia({
-  //     audio: {
-  //       echoCancellation: false,
-  //       autoGainControl: false,
-  //       noiseSuppression: false,
-  //       latency: 0,
-  //     },
-  //   });
-  // };
-
-  // const setupContext = async () => {
-  //   const guitar = await setupGuitar();
-  //   if (context.state === "suspended") {
-  //     await context.resume();
-  //   }
-  //   const source = context.createMediaStreamSource(guitar);
-  //   source.connect(gainNode);
-  // };
-
-  // setupContext();
-
   const firestore = firebase.firestore();
   const servers = {
     iceServers: [
@@ -112,53 +49,57 @@ function Videos({ mode, callId, setPage }) {
 
   //Function to set up video stream
   const setupSources = async () => {
-    //Get user's camera and microphone
+    // Get user's camera and microphone
     const localStream = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true,
     });
 
-    var ctx = new AudioContext();
-    var source = ctx.createMediaStreamSource(guitarStream);
-    var gainNode = ctx.createGain();
-    gainNode.gain.value = 0.5;
-    source.connect(gainNode);
-    source.connect(ctx.destination);
+    // Get the audio stream from the Amp component
+    const ampStream = await navigator.mediaDevices.getUserMedia({
+      audio: {
+        echoCancellation: false,
+        autoGainControl: false,
+        noiseSuppression: false,
+        latency: 0,
+      },
+    });
 
-    // create a new MediaStream object
+    // Create a new MediaStream object
     const newStream = new MediaStream();
 
-    // add the guitarStream to the new MediaStream object
-    guitarStream.getAudioTracks().forEach((track) => {
+    // Add the audio tracks from the Amp component to the new MediaStream object
+    ampStream.getAudioTracks().forEach((track) => {
       newStream.addTrack(track);
     });
 
-    // create a new audio track using the new MediaStream object
+    // Add the local tracks to the WebRTC peer connection
+    localStream.getTracks().forEach((track) => {
+      pc.addTrack(track, localStream);
+    });
+
+    // Add the audio track to the WebRTC peer connection
     const audioTrack = newStream.getTracks()[0];
     const audioSender = pc.addTrack(audioTrack, newStream);
 
-    // set the audio track's sender to "inactive" so that it can't be heard by the recipient
+    // Set the audio track's sender to "inactive" so that it can't be heard by the recipient
     if (audioSender && audioSender.sender) {
       audioSender.sender.replaceTrack(null);
     } else {
       console.log("audioSender or audioSender.sender is undefined");
     }
 
+    // Create a new MediaStream object for the remote stream
     const remoteStream = new MediaStream();
 
-    //Add the local tracks to the WebRTC peer connection
-    localStream.getTracks().forEach((track) => {
-      pc.addTrack(track, localStream);
-    });
-
-    //Listen to the onTrack event on the peer connection, add tracks to the remote stream
+    // Listen to the onTrack event on the peer connection, add tracks to the remote stream
     pc.ontrack = (event) => {
       event.streams[0].getTracks().forEach((track) => {
         remoteStream.addTrack(track);
       });
     };
 
-    //Set the streams as source for local and remote refs
+    // Set the streams as source for local and remote refs
     localRef.current.srcObject = localStream;
     remoteRef.current.srcObject = remoteStream;
 
@@ -347,6 +288,7 @@ function Videos({ mode, callId, setPage }) {
           </div>
         </div>
       )}
+      <Amp />
     </div>
   );
 }
