@@ -1,12 +1,8 @@
-import React from "react";
-import { createContext, useState, useRef, useEffect } from "react";
-
+import React, { createContext, useState, useRef, useEffect } from "react";
 import { io } from "socket.io-client";
 import Peer from "simple-peer";
 
 const SocketContext = createContext();
-
-const socket = io("http://localhost:5000");
 
 const ContextProvider = ({ children }) => {
   const [stream, setStream] = useState(null);
@@ -16,23 +12,29 @@ const ContextProvider = ({ children }) => {
   const [callEnded, setCallEnded] = useState(false);
   const [name, setName] = useState("");
 
-  const localVideo = useRef;
-  const remoteVideo = useRef;
-  const connectionRef = useRef;
+  const localVideo = useRef();
+  const remoteVideo = useRef();
+  const connectionRef = useRef();
 
   useEffect(() => {
     navigator.mediaDevices
-      .getDisplayMedia({ video: true, audio: true })
+      .getUserMedia({ video: true, audio: true })
       .then((currentStream) => {
         setStream(currentStream);
-
-        localVideo.current.srcObject = currentStream;
       });
     socket.on("me", (id) => setMyId(id));
     socket.on("calluser", ({ from, name: callerName, signal }) => {
       setCall({ isReceivedCall: true, from, name: callerName, signal });
     });
   }, []);
+
+  useEffect(() => {
+    if (stream) {
+      localVideo.current.srcObject = stream;
+    }
+  }, [stream]);
+
+  const socket = io("http://localhost:5000");
 
   const answerCall = () => {
     setCallAccepted(true);
@@ -82,4 +84,26 @@ const ContextProvider = ({ children }) => {
 
     window.location.reload();
   };
+
+  return (
+    <SocketContext.Provider
+      value={{
+        call,
+        callAccepted,
+        localVideo,
+        remoteVideo,
+        stream,
+        myId,
+        name,
+        setName,
+        callUser,
+        leaveCall,
+        answerCall,
+      }}
+    >
+      {children}
+    </SocketContext.Provider>
+  );
 };
+
+export { ContextProvider, SocketContext };
