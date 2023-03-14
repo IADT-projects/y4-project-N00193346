@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  readData,
+  readAll,
   readOne,
   createData,
   updateData,
@@ -10,7 +10,7 @@ const {
 } = require("../controllers/lesson_controller");
 
 router
-  .get("/", readData)
+  .get("/", readAll)
   .get("/:id", readOne)
   .post("/", createData)
   .put("/:id", updateData)
