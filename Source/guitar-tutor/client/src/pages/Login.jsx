@@ -6,7 +6,7 @@ import axios from "../config";
 const Login = () => {
   return (
     <>
-      <div>YOYOYOYO</div>
+      <div>login</div>
     </>
   );
 };

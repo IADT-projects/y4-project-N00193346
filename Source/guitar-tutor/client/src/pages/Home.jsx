@@ -67,9 +67,11 @@ const Home = () => {
               alt="guitart"
             />
             <CardActions>
-              <Button size="large" color="primary">
-                Sign In
-              </Button>
+              <Link to={`/login`}>
+                <Button size="large" color="primary">
+                  Sign In
+                </Button>
+              </Link>
             </CardActions>
           </Card>
           <Card sx={{ minWidth: 345 }}>
@@ -88,9 +90,11 @@ const Home = () => {
               alt="guitart"
             />
             <CardActions>
-              <Button size="large" color="primary">
-                Register
-              </Button>
+              <Link to={`/register`}>
+                <Button size="large" color="primary">
+                  Register
+                </Button>
+              </Link>
             </CardActions>
           </Card>
         </Container>
