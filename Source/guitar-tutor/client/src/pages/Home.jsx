@@ -5,9 +5,7 @@ import axios from "../config";
 import Card from "@mui/material/Card";
 import CardMedia from "@mui/material/CardMedia";
 import CardActions from "@mui/material/CardActions";
-import Box from "@mui/material/Box";
-import Paper from "@mui/material/Paper";
-import styled from "styled-components";
+
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
