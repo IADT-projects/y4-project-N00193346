@@ -54,15 +54,11 @@ const Register = (props) => {
       //   let token = localStorage.getItem("token");
 
       axios
-        .post("/users/register", form, {
-          //   headers: {
-          //     Authorization: `Bearer ${token}`,
-          //   },
-        })
+        .post("/users/register", form)
         .then((response) => {
           console.log(response.data);
-          props.onAuthenticated(true, response.data.token);
-          navigate("/");
+          props.onAuthenticated(true, response.data.token, response.data._id);
+          navigate(`/users/${response.data._id}`);
         })
         .catch((err) => {
           console.error(err);

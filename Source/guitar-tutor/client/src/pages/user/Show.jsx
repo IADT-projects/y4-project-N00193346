@@ -20,7 +20,26 @@ const UserShow = () => {
 
   const [user, setUser] = useState(null);
 
-  if (!user) return "Loading...";
+  let token = localStorage.getItem("token");
+
+  useEffect(() => {
+    axios
+      .get(`/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        setUser(response.data);
+      })
+      .catch((err) => {
+        console.error(err);
+        console.log(err.response.data.message);
+      });
+  }, [token, id]);
+
+  if (user === null) return "Loading...";
 
   return (
     <>
@@ -80,6 +99,9 @@ const UserShow = () => {
           </Typography>
         </CardContent>
       </Card>
+      <Button component={Link} to={`/lessons/create`} variant="contained">
+        Create a Lesson
+      </Button>
     </>
   );
 };

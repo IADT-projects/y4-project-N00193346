@@ -51,7 +51,7 @@ const Home = () => {
             flexWrap: "row",
           }}
         >
-          <Card sx={{ minWidth: 345 }}>
+          <Card sx={{ minWidth: 500 }}>
             <CardActionArea>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
@@ -61,7 +61,7 @@ const Home = () => {
             </CardActionArea>
             <CardMedia
               component="img"
-              height="140"
+              height="300"
               width="100%"
               image={image2}
               alt="guitart"
@@ -74,7 +74,7 @@ const Home = () => {
               </Link>
             </CardActions>
           </Card>
-          <Card sx={{ minWidth: 345 }}>
+          <Card sx={{ minWidth: 500 }}>
             <CardActionArea>
               <CardContent>
                 <Typography gutterBottom variant="h5" component="div">
@@ -84,7 +84,7 @@ const Home = () => {
             </CardActionArea>
             <CardMedia
               component="img"
-              height="140"
+              height="300"
               width="100%"
               image={image3}
               alt="guitart"

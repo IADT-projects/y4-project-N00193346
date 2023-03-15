@@ -5,7 +5,7 @@ import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import TextField from "@mui/material/Textfield";
+import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Avatar from "@mui/material/Avatar";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -50,7 +50,6 @@ const LoginForm = (props) => {
   const submitForm = () => {
     if (!isRequired(["email", "password"])) {
       console.log("Email: ", form.email);
-      console.log("Password: ", form.password);
 
       axios
         .post("/users/login", {
@@ -61,8 +60,8 @@ const LoginForm = (props) => {
           console.log(response.data);
           setErrors("");
 
-          props.onAuthenticated(true, response.data.token);
-          navigate("/");
+          props.onAuthenticated(true, response.data.token, response.data._id);
+          navigate(`/users/${response.data._id}`);
         })
         .catch((err) => {
           console.error(err);
@@ -123,7 +122,7 @@ const LoginForm = (props) => {
               Login
             </Button>
 
-            <Link to={`/users/register`} variant="body2">
+            <Link to={`/register`} variant="body2">
               Don't have an account? Sign Up
             </Link>
           </Box>

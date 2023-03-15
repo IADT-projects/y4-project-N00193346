@@ -10,6 +10,8 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import UserShow from "./pages/user/Show";
+import LessonIndex from "./pages/lesson/Index";
+import LessonCreate from "./pages/lesson/Create";
 
 function App() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -22,28 +24,32 @@ function App() {
     }
   }, []);
 
-  const onAuthenticated = (auth, token) => {
+  const onAuthenticated = (auth, token, _id) => {
     setAuthenticated(auth);
 
     if (auth) {
       localStorage.setItem("token", token);
     } else {
       localStorage.removeItem("token");
+      localStorage.removeItem("userId");
       console.log("Token has expired");
     }
 
-    if (authenticated) {
-      protectedTabs = (
-        <>
-          <Route path="/users/:id" element={<UserShow />} />
-        </>
-      );
-    }
+    // if (authenticated) {
+    //   protectedTabs = (
+    //     <>
+    //       <Route path="/users/:id" element={<UserShow />} />
+    //     </>
+    //   );
+    // }
   };
   return (
     <Router>
       <Container maxWidth="lg">
-        <Navbar />
+        <Navbar
+          onAuthenticated={onAuthenticated}
+          authenticated={authenticated}
+        />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route
@@ -64,7 +70,9 @@ function App() {
               />
             }
           />
-          {protectedTabs}
+          <Route path="/users/:id" element={<UserShow />} />
+          <Route path="/lessons" element={<LessonIndex />} />
+          <Route path="/lessons/create" element={<LessonCreate />} />
         </Routes>
       </Container>
     </Router>

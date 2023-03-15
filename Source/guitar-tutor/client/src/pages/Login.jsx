@@ -1,12 +1,15 @@
-import { Link } from "react-router-dom";
-import { Button } from "@mui/material";
-import { useEffect, useState } from "react";
-import axios from "../config";
+import LoginForm from "../components/LoginForm";
 
-const Login = () => {
+const Login = (props) => {
   return (
     <>
-      <div>login</div>
+      {!props.authenticated ? (
+        <>
+          <LoginForm onAuthenticated={props.onAuthenticated} />
+        </>
+      ) : (
+        <p>You are logged in</p>
+      )}
     </>
   );
 };
