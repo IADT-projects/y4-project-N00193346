@@ -42,11 +42,38 @@ const login = (req, res) => {
         res.status(200).json({
           msg: "Signed in",
           token,
+          _id: user._id,
+          role: user.role,
         });
       }
     })
     .catch((err) => {
       throw err;
+    });
+};
+
+const readOne = (req, res) => {
+  let id = req.params.id;
+
+  User.findById(id)
+    .then((data) => {
+      if (data) {
+        res.status(200).json(data);
+      } else {
+        res.status(404).json({
+          message: `User with id: ${id} not found`,
+        });
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      if (err.name === "CastError") {
+        res.status(400).json({
+          message: `Bad request, User with id: ${id} is not a valid id`,
+        });
+      } else {
+        res.status(500).json(err);
+      }
     });
 };
 
@@ -83,4 +110,5 @@ module.exports = {
   register,
   login,
   readAll,
+  readOne,
 };

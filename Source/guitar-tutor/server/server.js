@@ -2,11 +2,13 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const app = express();
 const port = 3000;
+var cors = require("cors");
 require("dotenv").config();
 
 require("./utils/db.js")();
 
 app.use(express.json());
+app.use(cors());
 
 app.use(express.static("public"));
 
