@@ -3,10 +3,13 @@ export const roomActions = {
   SET_ROOM_DETAILS: "ROOM.SET_ROOM_DETAILS",
   SET_ACTIVE_ROOMS: "ROOM.SET_ACTIVE_ROOMS",
   SET_LOCAL_STREAM: "ROOM.SET_LOCAL_STREAM",
+  SET_GUITAR_AUDIO: "ROOM.SET_GUITAR_AUDIO",
   SET_REMOTE_STREAMS: "ROOM.SET_REMOTE_STREAMS",
   SET_AUDIO_ONLY: "ROOM.SET_AUDIO_ONLY",
   SET_SCREEN_SHARE_STREAM: "ROOM.SET_SCREEN_SHARE_STREAM",
   SET_IS_USER_JOINED_WITH_ONLY_AUDIO: "ROOM.SET_IS_USER_JOINED_WITH_ONLY_AUDIO",
+  UPDATE_SOURCE: "ROOM.UPDATE_SOURCE",
+  SET_MEDIA_STREAM: "ROOM.SET_MEDIA_STREAM",
 };
 
 export const setOpenRoom = (
@@ -47,6 +50,49 @@ export const setLocalStream = (localStream) => {
   return {
     type: roomActions.SET_LOCAL_STREAM,
     localStream,
+  };
+};
+export const setGuitarAudio = (
+  guitarContext,
+  source,
+  gainNode,
+  bassEQ,
+  midEQ,
+  trebleEQ,
+  volume,
+  bass,
+  mid,
+  treble
+) => ({
+  type: roomActions.SET_GUITAR_AUDIO,
+  guitarContext,
+  source,
+  gainNode,
+  bassEQ,
+  midEQ,
+  trebleEQ,
+  volume,
+  bass,
+  mid,
+  treble,
+});
+
+export const updateSource = (source) => {
+  // console.log("Updating source...");
+  return {
+    type: roomActions.UPDATE_SOURCE,
+    payload: {
+      source,
+    },
+  };
+};
+
+export const setMediaStream = (mediaStream) => {
+  console.log("Updating MediaStream...");
+
+  return {
+    type: roomActions.SET_MEDIA_STREAM,
+    payload: mediaStream,
   };
 };
 

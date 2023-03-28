@@ -21,11 +21,12 @@
     "redux-thunk": "^2.4.2",
     "simple-peer": "^9.11.1",
     "socket.io-client": "^4.4.1",
+    "styled-components": "^5.3.9",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start-client": "react-scripts start",
-    "build": "react-scripts build && (cd ../server && npm install)",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

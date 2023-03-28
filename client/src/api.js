@@ -2,7 +2,7 @@ import axios from "axios";
 import { logout } from "./utils/auth";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:5002/api",
+  baseURL: "https://intelligenttest.herokuapp.com/api",
   timeout: 1000,
 });
 

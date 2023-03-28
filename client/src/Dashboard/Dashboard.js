@@ -9,10 +9,11 @@ import { connect } from "react-redux";
 import { getActions } from "../store/actions/authActions";
 import { connectWithSocketServer } from "../realtimeCommunication/socketConnection";
 import Room from "./Room/Room";
+import Amp from "./Amp/Amp";
 
 const Container = styled("div")({
   width: "100%",
-  height: "100vh",
+  height: "80vh",
   display: "flex",
 });
 
@@ -37,6 +38,7 @@ const Dashboard = ({ setUserDetails, isUserInRoom }) => {
         <AppBar />
         {isUserInRoom && <Room />}
       </Container>
+      <Amp />
     </>
   );
 };

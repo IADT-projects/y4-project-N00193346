@@ -11,6 +11,18 @@ const initState = {
   screenSharingStream: null,
   isScreenSharingActive: false,
   isUserJoinedWithOnlyAudio: false,
+  //Guitar params
+  guitarContext: new AudioContext(),
+  source: null,
+  gainNode: null,
+  bassEQ: null,
+  midEQ: null,
+  trebleEQ: null,
+  volume: 0.5,
+  bass: 0,
+  mid: 0,
+  treble: 0,
+  guitarAudio: null,
 };
 
 const reducer = (state = initState, action) => {
@@ -36,6 +48,34 @@ const reducer = (state = initState, action) => {
         ...state,
         localStream: action.localStream,
       };
+    case roomActions.SET_GUITAR_AUDIO:
+      console.log("Updating Source in store... " + action.source);
+      return {
+        ...state,
+        guitarContext: action.guitarContext,
+        source: action.source,
+        gainNode: action.gainNode,
+        bassEQ: action.bassEQ,
+        midEQ: action.midEQ,
+        trebleEQ: action.trebleEQ,
+        volume: action.volume,
+        bass: action.bass,
+        mid: action.mid,
+        treble: action.treble,
+      };
+    case roomActions.UPDATE_SOURCE:
+      // console.log("Updating source in store...");
+      return {
+        ...state,
+        source: action.source,
+      };
+    case roomActions.SET_MEDIA_STREAM:
+      console.log("Updating mediaStream in store... " + action.mediaStream);
+      return {
+        ...state,
+        mediaStream: action.mediaStream,
+      };
+
     case roomActions.SET_AUDIO_ONLY:
       return {
         ...state,
