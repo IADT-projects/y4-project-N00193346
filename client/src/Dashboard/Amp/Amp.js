@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import RangeInput from "./RangeInput/RangeInput";
-import { useState, useEffect } from "react";
-import { connect } from "react-redux";
 import store from "../../store/store";
-import { setMediaStream } from "../../store/actions/roomActions";
-import { setGuitarAudio, updateSource } from "../../store/actions/roomActions";
+import RangeInput from "./RangeInput/RangeInput";
+import { useState, useEffect, useContext } from "react";
+import { connect } from "react-redux";
+import {setGuitarStream, setLocalStream} from "../../store/actions/roomActions";
+import AmpContext from "./AmpContext";
 
 export const Container = styled.div`
   margin-top: 10px;
@@ -17,46 +17,34 @@ export const Container = styled.div`
   background-color: grey;
 `;
 
-function Amp(props) {
-  const {
-    guitarContext,
-    source,
-
-    bassEQ,
-    midEQ,
-    trebleEQ,
-    volume,
-    bass,
-    mid,
-    treble,
-  } = props;
-  const [mediaStream, setMediaStream] = useState(null);
+function Amp() {
   const [onButton, setOn] = useState(0);
-  // const [volume, setVolume] = useState(0.5);
+  const [volume, setVolume] = useState(0.5);
   // const [bass, setBass] = useState(0);
   // const [mid, setMid] = useState(0);
   // const [treble, setTreble] = useState(0);
 
-  const gainNode = new GainNode(guitarContext, { gain: volume });
-  // bassEQ = new BiquadFilterNode(guitarContext, {
+  const context = new AudioContext();
+  const gainNode = new GainNode(context, { gain: volume });
+  // const bassEQ = new BiquadFilterNode(context, {
   //   type: "lowshelf",
   //   frequency: 500,
   //   gain: bass,
   // });
-  // midEQ = new BiquadFilterNode(guitarContext, {
+  // const midEQ = new BiquadFilterNode(context, {
   //   type: "peaking",
   //   Q: Math.SQRT1_2,
   //   frequency: 1500,
   //   gain: mid,
   // });
-  // trebleEQ = new BiquadFilterNode(guitarContext, {
+  // const trebleEQ = new BiquadFilterNode(context, {
   //   type: "highshelf",
   //   frequency: 3000,
   //   gain: treble,
   // });
 
   useEffect(() => {
-    gainNode.connect(guitarContext.destination);
+    gainNode.connect(context.destination);
     gainNode.addEventListener("gainchange", handleGainChange);
     return () => {
       gainNode.removeEventListener("gainchange", handleGainChange);
@@ -65,7 +53,7 @@ function Amp(props) {
   }, [gainNode]);
 
   // useEffect(() => {
-  //   bassEQ.connect(guitarContext.destination);
+  //   bassEQ.connect(context.destination);
   //   bassEQ.addEventListener("basschange", handleBassChange);
   //   return () => {
   //     bassEQ.removeEventListener("bassChange", handleBassChange);
@@ -74,7 +62,7 @@ function Amp(props) {
   // }, [bassEQ]);
 
   // useEffect(() => {
-  //   midEQ.connect(guitarContext.destination);
+  //   midEQ.connect(context.destination);
   //   midEQ.addEventListener("midchange", handleMidChange);
   //   return () => {
   //     midEQ.removeEventListener("midChange", handleMidChange);
@@ -110,22 +98,19 @@ function Amp(props) {
     });
   };
 
-  const setupContext = async (source) => {
+  const setupContext = async () => {
     const guitar = await setupGuitar();
-    if (guitarContext.state === "suspended") {
-      await guitarContext.resume();
+    if (context.state === "suspended") {
+      await context.resume();
     }
-    // const mediaStream = guitar;
-    source = guitarContext.createMediaStreamSource(guitar);
-
+    const source = context.createMediaStreamSource(guitar);
     source.connect(gainNode);
     // source.connect(bassEQ);
     // source.connect(midEQ);
     // source.connect(trebleEQ);
-    setMediaStream(guitar);
-    let audioTracks = guitar.getAudioTracks();
-    console.log("Audio tracks: " + audioTracks[0]);
-    store.dispatch(setMediaStream(audioTracks[0]));
+    let guitarAudio = source
+    console.log("Guitar Audio :" + guitarAudio);
+    store.dispatch(setGuitarStream(guitarAudio));
   };
 
   if (onButton === 1) {
@@ -136,33 +121,38 @@ function Amp(props) {
   }
 
   return (
-    <>
-      <button onClick={() => setOn(1)}>Turn On Amplifer</button>
-      <Container>
-        <RangeInput labelFor="Volume" inputId="volume" />
-        <RangeInput labelFor="Bass" inputId="bass" />
-        <RangeInput labelFor="Mid" inputId="mid" />
+    // <AmpContext.Provider value={guitarAudio}>
+      <>
+        <button onClick={() => setOn(1)}>Turn On Amplifer</button>
+        <Container>
+          <RangeInput
+            labelFor="Volume"
+            inputId="volume"
+            setParentValue={setVolume}
+          />
+          {/* <RangeInput labelFor="Bass" inputId="bass" setParentValue={setBass} />
+        <RangeInput labelFor="Mid" inputId="mid" setParentValue={setMid} />
         <RangeInput
           labelFor="Treble"
           inputId="treble"
-          // setParentValue={setTreble}
-        />
-      </Container>
-    </>
+          setParentValue={setTreble}
+        /> */}
+        </Container>
+      </>
+    // </AmpContext.Provider>
   );
 }
 
-const mapStoreStateToProps = ({ room }) => {
-  return {
-    ...room,
-  };
-};
+// const mapStoreStateToProps = ({ room }) => {
+//   return {
+//     ...room,
+//   };
+// };
 
 const mapActionsToProps = (dispatch) => {
   return {
-    // ...setGuitarAudio(dispatch),
-    ...setMediaStream(dispatch),
+    ...setGuitarStream(dispatch),
   };
 };
 
-export default connect(mapStoreStateToProps, mapActionsToProps)(Amp);
+export default connect(null, mapActionsToProps)(Amp);

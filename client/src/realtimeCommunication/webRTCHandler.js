@@ -41,9 +41,11 @@ const guitarConstraints = {
 
 export const getLocalStreamPreview = (onlyAudio = false, callbackFunc) => {
   const constraints = onlyAudio ? onlyAudioConstraints : defaultConstraints;
-  const guitar = store.getState().room.mediaStream;
+  const guitar = store.getState().room.guitarStream;
 
   console.log("Guitar is: " + guitar);
+  const mediaStream = guitar.mediaStream;
+
   // const guitarStream =
   //   guitar.createMediaStreamDestination(guitarConstraints).stream;
 
@@ -52,7 +54,7 @@ export const getLocalStreamPreview = (onlyAudio = false, callbackFunc) => {
   navigator.mediaDevices
     .getUserMedia(constraints)
     .then((stream) => {
-      // stream.addTrack(guitarStream.getAudioTracks()[0]);
+      stream.addTrack(mediaStream.getAudioTracks()[0]);
       store.dispatch(setLocalStream(stream));
       callbackFunc();
     })
