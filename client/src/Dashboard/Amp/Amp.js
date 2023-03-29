@@ -3,7 +3,10 @@ import store from "../../store/store";
 import RangeInput from "./RangeInput/RangeInput";
 import { useState, useEffect, useContext } from "react";
 import { connect } from "react-redux";
-import {setGuitarStream, setLocalStream} from "../../store/actions/roomActions";
+import {
+  setGuitarStream,
+  setLocalStream,
+} from "../../store/actions/roomActions";
 import AmpContext from "./AmpContext";
 
 export const Container = styled.div`
@@ -108,7 +111,7 @@ function Amp() {
     // source.connect(bassEQ);
     // source.connect(midEQ);
     // source.connect(trebleEQ);
-    let guitarAudio = source
+    let guitarAudio = source;
     console.log("Guitar Audio :" + guitarAudio);
     store.dispatch(setGuitarStream(guitarAudio));
   };
@@ -122,23 +125,23 @@ function Amp() {
 
   return (
     // <AmpContext.Provider value={guitarAudio}>
-      <>
-        <button onClick={() => setOn(1)}>Turn On Amplifer</button>
-        <Container>
-          <RangeInput
-            labelFor="Volume"
-            inputId="volume"
-            setParentValue={setVolume}
-          />
-          {/* <RangeInput labelFor="Bass" inputId="bass" setParentValue={setBass} />
+    <>
+      <button onClick={() => setOn(1)}>Turn On Amplifer</button>
+      <Container>
+        <RangeInput
+          labelFor="Volume"
+          inputId="volume"
+          setParentValue={setVolume}
+        />
+        {/* <RangeInput labelFor="Bass" inputId="bass" setParentValue={setBass} />
         <RangeInput labelFor="Mid" inputId="mid" setParentValue={setMid} />
         <RangeInput
           labelFor="Treble"
           inputId="treble"
           setParentValue={setTreble}
         /> */}
-        </Container>
-      </>
+      </Container>
+    </>
     // </AmpContext.Provider>
   );
 }

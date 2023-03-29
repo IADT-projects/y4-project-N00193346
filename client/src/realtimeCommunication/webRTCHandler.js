@@ -70,18 +70,17 @@ let peers = {};
 export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
   // Get the local stream and guitar context from the Redux store
   const localStream = store.getState().room.localStream;
-  const guitar = store.getState().room.guitarContext;
+  const guitar = store.getState().room.guitarStream;
 
   // Create a new MediaStreamDestination from the guitar context and get its stream
-  const guitarStream =
-    guitar.createMediaStreamDestination(guitarConstraints).stream;
+  const guitarStream = guitar.mediaStream;
 
   // Log whether the current user is the initiator of the connection or not
-  // if (isInitiator) {
-  //   console.log("preparing new peer connection as initiator");
-  // } else {
-  //   console.log("preparing new peer connection as not initiator");
-  // }
+  if (isInitiator) {
+    console.log("preparing new peer connection as initiator");
+  } else {
+    console.log("preparing new peer connection as not initiator");
+  }
 
   // Create a new MediaStream object containing both the local stream and the guitar stream
   const combinedStream = new MediaStream([...localStream.getTracks()]);

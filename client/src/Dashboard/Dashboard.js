@@ -8,8 +8,10 @@ import { logout } from "../utils/auth";
 import { connect } from "react-redux";
 import { getActions } from "../store/actions/authActions";
 import { connectWithSocketServer } from "../realtimeCommunication/socketConnection";
+
 import Room from "./Room/Room";
 import Amp from "./Amp/Amp";
+import Chord from "./Chord/Chord";
 
 const Container = styled("div")({
   width: "100%",
@@ -17,6 +19,12 @@ const Container = styled("div")({
   display: "flex",
 });
 
+const BottomContainer = styled("div")({
+  width: "100%",
+  height: "10vh",
+  display: "flex",
+  justifyContent: "space-between",
+});
 const Dashboard = ({ setUserDetails, isUserInRoom }) => {
   useEffect(() => {
     const userDetails = localStorage.getItem("user");
@@ -38,7 +46,10 @@ const Dashboard = ({ setUserDetails, isUserInRoom }) => {
         <AppBar />
         {isUserInRoom && <Room />}
       </Container>
-      <Amp />
+      <BottomContainer>
+        <Amp />
+        <Chord />
+      </BottomContainer>
     </>
   );
 };

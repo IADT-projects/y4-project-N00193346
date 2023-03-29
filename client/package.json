@@ -21,6 +21,7 @@
     "redux-thunk": "^2.4.2",
     "simple-peer": "^9.11.1",
     "socket.io-client": "^4.4.1",
+    "spectrogram": "^0.0.7",
     "styled-components": "^5.3.9",
     "web-vitals": "^2.1.4"
   },
