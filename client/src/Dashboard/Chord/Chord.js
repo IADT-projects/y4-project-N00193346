@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Spectrogram from "spectrogram";
 import store from "../../store/store";
+import io from "socket.io-client";
+import * as socketConnection from "../../realtimeCommunication/socketConnection";
+const socket = io();
 
 function Chord() {
   const [screenshots, setScreenshots] = useState([]);
@@ -91,7 +94,7 @@ function Chord() {
     }
 
     const url =
-      "https://uksouth.api.cognitive.microsoft.com/customvision/v3.0/Prediction/85aa730f-3c29-4753-8bef-86aa0f585a83/classify/iterations/Iteration1/image";
+      "https://uksouth.api.cognitive.microsoft.com/customvision/v3.0/Prediction/ccc829a0-a16b-41c7-891b-b14a176132a2/classify/iterations/Iteration2/image";
     const predictionKey = "1290d1bca24f44378c609a41bab869cb";
 
     const headers = {
@@ -110,6 +113,7 @@ function Chord() {
       .then((result) => {
         console.log("Received response", result);
         setPrediction(`Prediction: ${result.predictions[0].tagName}`);
+        socket.emit("newChord", `${result.predictions[0].tagName}`);
       })
       .catch((error) => setPrediction("Error: " + error.message));
   }

@@ -36,6 +36,11 @@ const registerSocketServer = (server) => {
     newConnectionHandler(socket, io);
     emitOnlineUsers();
 
+    socket.on("newChord", (data) => {
+      console.log(data);
+      socket.broadcast.emit("newChord", data);
+    });
+
     socket.on("direct-message", (data) => {
       directMessageHandler(socket, data);
     });

@@ -72,6 +72,10 @@ export const connectWithSocketServer = (userDetails) => {
     console.log("user left room");
     webRTCHandler.handleParticipantLeftRoom(data);
   });
+
+  socket.on("console-log", (data) => {
+    console.log(data);
+  });
 };
 
 export const sendDirectMessage = (data) => {
@@ -97,4 +101,8 @@ export const leaveRoom = (data) => {
 
 export const signalPeerData = (data) => {
   socket.emit("conn-signal", data);
+};
+
+export const newChord = (data) => {
+  socket.emit("newChord", data);
 };
