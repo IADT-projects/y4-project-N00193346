@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import Spectrogram from "spectrogram";
 import store from "../../store/store";
-import io from "socket.io-client";
-import * as socketConnection from "../../realtimeCommunication/socketConnection";
-const socket = io();
+
+import { receiveChord } from "../../realtimeCommunication/socketConnection";
 
 function Chord() {
   const [screenshots, setScreenshots] = useState([]);
@@ -113,7 +112,7 @@ function Chord() {
       .then((result) => {
         console.log("Received response", result);
         setPrediction(`Prediction: ${result.predictions[0].tagName}`);
-        socket.emit("newChord", `${result.predictions[0].tagName}`);
+        receiveChord(`${result.predictions[0].tagName}`);
       })
       .catch((error) => setPrediction("Error: " + error.message));
   }

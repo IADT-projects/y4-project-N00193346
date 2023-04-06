@@ -73,8 +73,8 @@ export const connectWithSocketServer = (userDetails) => {
     webRTCHandler.handleParticipantLeftRoom(data);
   });
 
-  socket.on("console-log", (data) => {
-    console.log(data);
+  socket.on("sendChord", (data) => {
+    console.log("The data from send chord is:" + data);
   });
 };
 
@@ -103,6 +103,6 @@ export const signalPeerData = (data) => {
   socket.emit("conn-signal", data);
 };
 
-export const newChord = (data) => {
-  socket.emit("newChord", data);
+export const receiveChord = (data) => {
+  socket.emit("receiveChord", data);
 };
