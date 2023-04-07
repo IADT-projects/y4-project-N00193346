@@ -4,6 +4,7 @@ import {
   setFriends,
   setOnlineUsers,
 } from "../store/actions/friendsActions";
+import { setGuitarChord } from "../store/actions/roomActions";
 import store from "../store/store";
 import { updateDirectChatHistoryIfActive } from "../utils/chat";
 import * as roomHandler from "./roomHandler";
@@ -75,6 +76,7 @@ export const connectWithSocketServer = (userDetails) => {
 
   socket.on("sendChord", (data) => {
     console.log("The data from send chord is:" + data);
+    store.dispatch(setGuitarChord(data));
   });
 };
 

@@ -15,6 +15,7 @@ const initState = {
   guitarContext: new AudioContext(),
   source: null,
   guitarStream: null,
+  guitarChord: null,
 };
 
 const reducer = (state = initState, action) => {
@@ -45,6 +46,12 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         guitarStream: action.guitarStream,
+      };
+    case roomActions.SET_GUITAR_CHORD:
+      console.log("Updating Guitar Chord in store... " + action.guitarChord);
+      return {
+        ...state,
+        guitarChord: action.guitarChord,
       };
     case roomActions.UPDATE_SOURCE:
       // console.log("Updating source in store...");

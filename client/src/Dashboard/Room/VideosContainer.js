@@ -2,6 +2,7 @@ import React from "react";
 import { styled } from "@mui/system";
 import { connect } from "react-redux";
 import Video from "./Video";
+import ChordDisplay from "../Chord/ChordDisplay";
 
 const MainContainer = styled("div")({
   height: "85%",
@@ -24,6 +25,7 @@ const VideosContainer = ({
       {remoteStreams.map((stream) => (
         <Video stream={stream} key={stream.id} />
       ))}
+      <ChordDisplay />
     </MainContainer>
   );
 };

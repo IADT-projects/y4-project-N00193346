@@ -10,6 +10,7 @@ export const roomActions = {
   SET_IS_USER_JOINED_WITH_ONLY_AUDIO: "ROOM.SET_IS_USER_JOINED_WITH_ONLY_AUDIO",
   UPDATE_SOURCE: "ROOM.UPDATE_SOURCE",
   SET_GUITAR_STREAM: "ROOM.SET_GUITAR_STREAM",
+  SET_GUITAR_CHORD: "ROOM.SET_GUITAR_CHORD",
 };
 
 export const setOpenRoom = (
@@ -58,6 +59,14 @@ export const setGuitarStream = (guitarStream) => {
   return {
     type: roomActions.SET_GUITAR_STREAM,
     guitarStream,
+  };
+};
+
+export const setGuitarChord = (guitarChord) => {
+  console.log("The guitar Chord in set" + guitarChord);
+  return {
+    type: roomActions.SET_GUITAR_CHORD,
+    guitarChord,
   };
 };
 

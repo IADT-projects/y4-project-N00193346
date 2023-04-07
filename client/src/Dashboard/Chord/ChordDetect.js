@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Spectrogram from "spectrogram";
-import { connect } from "react-redux";
-import store from "../../../store/store";
+import store from "../../store/store";
 
-function GuitarToSpec({ screenshots, setScreenshots }) {
+import { receiveChord } from "../../realtimeCommunication/socketConnection";
+
+function ChordDetect() {
+  const [screenshots, setScreenshots] = useState([]);
+  const [prediction, setPrediction] = useState("");
   const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
@@ -16,14 +19,11 @@ function GuitarToSpec({ screenshots, setScreenshots }) {
         },
       });
 
-      // Create an AudioContext instance.
-      const audioContext = new AudioContext();
-
       // Take a screenshot of the canvas every 5 seconds and store it in the screenshots state array.
       const intervalId = setInterval(() => {
         const screenshot = canvas.toDataURL();
         setScreenshots((prevScreenshots) => [...prevScreenshots, screenshot]);
-      }, 10000);
+      }, 5000);
 
       // When the component unmounts, clear the screenshot interval.
       return () => {
@@ -31,6 +31,11 @@ function GuitarToSpec({ screenshots, setScreenshots }) {
       };
     }
   }, [isRunning]);
+
+  useEffect(() => {
+    // do something with the updated screenshot
+    submit();
+  }, [screenshots]);
 
   useEffect(() => {
     if (isRunning) {
@@ -76,20 +81,61 @@ function GuitarToSpec({ screenshots, setScreenshots }) {
   const lastScreenshot =
     screenshots.length > 0 ? screenshots[screenshots.length - 1] : "";
 
-  // Render the canvas and image elements, conditionally based on the value of the isRunning state variable.
+  async function submit() {
+    const lastScreenshot = screenshots[screenshots.length - 1];
+
+    const blob = await fetch(lastScreenshot).then((r) => r.blob());
+    const file = new File([blob], "screenshot.jpg", { type: "image/jpeg" });
+
+    if (!file) {
+      setPrediction("Please select an image file.");
+      return;
+    }
+
+    const url =
+      "https://uksouth.api.cognitive.microsoft.com/customvision/v3.0/Prediction/ccc829a0-a16b-41c7-891b-b14a176132a2/classify/iterations/Iteration2/image";
+    const predictionKey = "1290d1bca24f44378c609a41bab869cb";
+
+    const headers = {
+      "Prediction-Key": predictionKey,
+      "Content-Type": "application/octet-stream",
+    };
+
+    console.log("Sending request", { url, headers, file });
+
+    fetch(url, {
+      method: "POST",
+      headers: headers,
+      body: file,
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log("Received response", result);
+        setPrediction(`Prediction: ${result.predictions[0].tagName}`);
+        receiveChord(`${result.predictions[0].tagName}`);
+      })
+      .catch((error) => setPrediction("Error: " + error.message));
+  }
+
   return (
-    <div>
-      <button onClick={() => setIsRunning(!isRunning)}>
-        {isRunning ? "Turn Off" : "Turn On"}
-      </button>
-      {isRunning && (
-        <>
-          <canvas id="canvas"></canvas>
-          <img src={lastScreenshot} alt="Last Screenshot" />
-        </>
-      )}
+    <div className="app">
+      <div>
+        <button onClick={() => setIsRunning(!isRunning)}>
+          {isRunning ? "Turn Off" : "Turn On"}
+        </button>
+        {isRunning && (
+          <>
+            <canvas
+              id="canvas"
+              style={{ width: "400px", height: "200px" }}
+            ></canvas>
+            <img src={lastScreenshot} alt="Last Screenshot" />
+          </>
+        )}
+      </div>
+      <div>{prediction}</div>
     </div>
   );
 }
 
-export default GuitarToSpec;
+export default ChordDetect;

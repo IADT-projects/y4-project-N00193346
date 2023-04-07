@@ -8,10 +8,11 @@ import { logout } from "../utils/auth";
 import { connect } from "react-redux";
 import { getActions } from "../store/actions/authActions";
 import { connectWithSocketServer } from "../realtimeCommunication/socketConnection";
+import ChordDisplay from "./Chord/ChordDisplay";
 
 import Room from "./Room/Room";
 import Amp from "./Amp/Amp";
-import Chord from "./Chord/Chord";
+import ChordDetect from "./Chord/ChordDetect";
 
 const Container = styled("div")({
   width: "100%",
@@ -48,7 +49,7 @@ const Dashboard = ({ setUserDetails, isUserInRoom }) => {
       </Container>
       <BottomContainer>
         <Amp />
-        <Chord />
+        <ChordDetect />
       </BottomContainer>
     </>
   );
