@@ -5,10 +5,27 @@ import Video from "./Video";
 import ChordDisplay from "../Chord/ChordDisplay";
 
 const MainContainer = styled("div")({
-  height: "85%",
+  position: "relative",
   width: "100%",
-  display: "flex",
-  flexWrap: "wrap",
+  height: "100%",
+});
+
+const VideoWrapper = styled("div")({
+  position: "absolute",
+  top: 0,
+  right: 0,
+});
+
+const LocalVideoWrapper = styled("div")({
+  position: "absolute",
+  bottom: 0,
+  left: 0,
+});
+
+const ChordDisplayWrapper = styled("div")({
+  position: "absolute",
+  bottom: 0,
+  right: 0,
 });
 
 const VideosContainer = ({
@@ -18,14 +35,22 @@ const VideosContainer = ({
 }) => {
   return (
     <MainContainer>
-      <Video
-        stream={screenSharingStream ? screenSharingStream : localStream}
-        isLocalStream
-      />
       {remoteStreams.map((stream) => (
         <Video stream={stream} key={stream.id} />
       ))}
-      <ChordDisplay />
+      {localStream && (
+        <LocalVideoWrapper>
+          <Video stream={localStream} isLocalStream />
+        </LocalVideoWrapper>
+      )}
+      {screenSharingStream && (
+        <VideoWrapper>
+          <Video stream={screenSharingStream} isLocalStream />
+        </VideoWrapper>
+      )}
+      <ChordDisplayWrapper>
+        <ChordDisplay />
+      </ChordDisplayWrapper>
     </MainContainer>
   );
 };

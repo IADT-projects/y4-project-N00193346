@@ -16,7 +16,7 @@ const MainContainer = styled("div")({
 
 const fullScreenRoomStyle = {
   width: "100%",
-  height: "100vh",
+  height: "80vh",
 };
 
 const minimizedRoomStyle = {
@@ -27,7 +27,7 @@ const minimizedRoomStyle = {
 };
 
 const Room = () => {
-  const [isRoomMinimized, setIsRoomMinimized] = useState(true);
+  const [isRoomMinimized, setIsRoomMinimized] = useState(false);
 
   const roomResizeHandler = () => {
     setIsRoomMinimized(!isRoomMinimized);
