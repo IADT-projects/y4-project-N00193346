@@ -67,7 +67,7 @@ function ChordDetect() {
         const intervalId = setInterval(() => {
           const screenshot = canvas.toDataURL();
           setScreenshots((prevScreenshots) => [...prevScreenshots, screenshot]);
-        }, 10000);
+        }, 4000);
 
         return () => {
           clearInterval(intervalId);
@@ -87,13 +87,8 @@ function ChordDetect() {
     const blob = await fetch(lastScreenshot).then((r) => r.blob());
     const file = new File([blob], "screenshot.jpg", { type: "image/jpeg" });
 
-    if (!file) {
-      setPrediction("Please select an image file.");
-      return;
-    }
-
     const url =
-      "https://uksouth.api.cognitive.microsoft.com/customvision/v3.0/Prediction/ccc829a0-a16b-41c7-891b-b14a176132a2/classify/iterations/Iteration2/image";
+      "https://uksouth.api.cognitive.microsoft.com/customvision/v3.0/Prediction/4f4b4d2f-3fc9-4a40-99c4-85bb2b75ed96/classify/iterations/Iteration1/image";
     const predictionKey = "1290d1bca24f44378c609a41bab869cb";
 
     const headers = {
