@@ -44,17 +44,14 @@ export const getLocalStreamPreview = (onlyAudio = false, callbackFunc) => {
   const guitar = store.getState().room.guitarStream;
 
   console.log("Guitar is: " + guitar);
-  const mediaStream = guitar.mediaStream;
-
-  // const guitarStream =
-  //   guitar.createMediaStreamDestination(guitarConstraints).stream;
-
-  // console.log("Guitar Stream" + guitarStream);
+  const mediaStream = guitar?.mediaStream;
 
   navigator.mediaDevices
     .getUserMedia(constraints)
     .then((stream) => {
-      stream.addTrack(mediaStream.getAudioTracks()[0]);
+      if (mediaStream) {
+        stream.addTrack(mediaStream.getAudioTracks()[0]);
+      }
       store.dispatch(setLocalStream(stream));
       callbackFunc();
     })
@@ -68,12 +65,16 @@ let peers = {};
 
 // Create a new PeerConnection object
 export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
-  // Get the local stream and guitar context from the Redux store
   const localStream = store.getState().room.localStream;
   const guitar = store.getState().room.guitarStream;
 
-  // Create a new MediaStreamDestination from the guitar context and get its stream
-  const guitarStream = guitar.mediaStream;
+  const combinedTracks = [...localStream.getTracks()];
+
+  if (guitar && guitar.mediaStream) {
+    combinedTracks.push(guitar.mediaStream.getAudioTracks()[0]);
+  }
+
+  const combinedStream = new MediaStream(combinedTracks);
 
   // Log whether the current user is the initiator of the connection or not
   if (isInitiator) {
@@ -81,16 +82,6 @@ export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
   } else {
     console.log("preparing new peer connection as not initiator");
   }
-
-  // Create a new MediaStream object containing both the local stream and the guitar stream
-  const combinedStream = new MediaStream([...localStream.getTracks()]);
-  combinedStream.addTrack(guitarStream.getAudioTracks()[0]);
-
-  console.log("combinedStream: ", combinedStream);
-  console.log(
-    "Combined Stream audio tracks:",
-    combinedStream.getAudioTracks().length
-  );
 
   // Create a new Peer object and add it to the peers object using the socket ID as the key
   peers[connUserSocketId] = new Peer({
