@@ -9,7 +9,7 @@ const BoxContainer = styled("div")({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  backgroundImage: `url(${guitarImage})`, // Use the imported image as backgroundImage
+  backgroundImage: `url(${guitarImage})`,
   backgroundSize: "cover",
 });
 function AuthBox(props) {

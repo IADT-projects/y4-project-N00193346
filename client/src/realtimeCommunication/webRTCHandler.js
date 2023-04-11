@@ -7,7 +7,6 @@ const getConfiguration = () => {
   const turnIceServers = null;
 
   if (turnIceServers) {
-    // TODO use TURN server credentials
   } else {
     console.warn("Using only STUN server");
     return {
@@ -28,15 +27,6 @@ const onlyAudioConstraints = {
 const defaultConstraints = {
   video: true,
   audio: true,
-};
-
-const guitarConstraints = {
-  audio: {
-    echoCancellation: false,
-    autoGainControl: false,
-    noiseSuppression: false,
-    latency: 0,
-  },
 };
 
 export const getLocalStreamPreview = (onlyAudio = false, callbackFunc) => {

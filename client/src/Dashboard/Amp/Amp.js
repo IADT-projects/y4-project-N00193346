@@ -115,11 +115,15 @@ function Amp() {
     let guitarAudio = source;
     console.log("Guitar Audio :" + guitarAudio);
     store.dispatch(setGuitarStream(guitarAudio));
-    setChord(onButton);
+    const userAccount = store.getState().auth.userDetails?.account;
+    if (userAccount === "instructor") {
+      setChord(onButton);
+    }
   };
 
   if (onButton) {
     setupContext();
+
     // handleBassChange();
     // handleMidChange();
     // handleTrebleChange();
