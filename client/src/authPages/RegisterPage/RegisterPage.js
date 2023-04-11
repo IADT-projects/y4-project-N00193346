@@ -14,11 +14,12 @@ const RegisterPage = ({ register }) => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [account, setAccount] = useState("");
 
   const [isFormValid, setFormValid] = useState(false);
 
   const handleRegister = () => {
-    const userDetails = { email, password, username };
+    const userDetails = { email, password, username, account };
     register(userDetails, navigate);
   };
 
@@ -28,9 +29,10 @@ const RegisterPage = ({ register }) => {
         email,
         username,
         password,
+        account,
       })
     );
-  }, [email, password, username, setFormValid]);
+  }, [email, password, username, account, setFormValid]);
 
   return (
     <>
@@ -45,6 +47,8 @@ const RegisterPage = ({ register }) => {
           setUsername={setUsername}
           password={password}
           setPassword={setPassword}
+          account={account}
+          setAccount={setAccount}
         />
         <RegisterPageFooter
           handleRegister={handleRegister}
