@@ -23,9 +23,11 @@ const LocalVideoWrapper = styled("div")({
 });
 
 const ChordDisplayWrapper = styled("div")({
-  position: "absolute",
-  bottom: 0,
-  right: 0,
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "flex-end",
+  width: "100%",
+  height: "100%",
 });
 
 const VideosContainer = ({
