@@ -4,42 +4,13 @@ import store from "../../store/store";
 
 import { receiveChord } from "../../realtimeCommunication/socketConnection";
 
-function ChordDetect() {
-  const [screenshots, setScreenshots] = useState([]);
+function ChordDetect({ onChord }) {
   const [prediction, setPrediction] = useState("");
-  const [isRunning, setIsRunning] = useState(false);
 
   useEffect(() => {
-    if (isRunning) {
-      // When the component mounts, get the canvas element and create a Spectrogram instance.
-      const canvas = document.getElementById("canvas");
-      const spectro = Spectrogram(canvas, {
-        audio: {
-          enable: false,
-        },
-      });
-
-      // Take a screenshot of the canvas every 5 seconds and store it in the screenshots state array.
-      const intervalId = setInterval(() => {
-        const screenshot = canvas.toDataURL();
-        setScreenshots((prevScreenshots) => [...prevScreenshots, screenshot]);
-      }, 5000);
-
-      // When the component unmounts, clear the screenshot interval.
-      return () => {
-        clearInterval(intervalId);
-      };
-    }
-  }, [isRunning]);
-
-  useEffect(() => {
-    // do something with the updated screenshot
-    submit();
-  }, [screenshots]);
-
-  useEffect(() => {
-    if (isRunning) {
-      const canvas = document.getElementById("canvas");
+    if (onChord) {
+      // When the component mounts, create a Spectrogram instance.
+      const canvas = document.createElement("canvas"); // Create a hidden canvas element
       const spectro = Spectrogram(canvas, {
         audio: {
           enable: false,
@@ -66,7 +37,7 @@ function ChordDetect() {
 
         const intervalId = setInterval(() => {
           const screenshot = canvas.toDataURL();
-          setScreenshots((prevScreenshots) => [...prevScreenshots, screenshot]);
+          submit(screenshot); // Pass the screenshot to submit function
         }, 4000);
 
         return () => {
@@ -75,16 +46,10 @@ function ChordDetect() {
         };
       }
     }
-  }, [isRunning]);
+  }, [onChord]);
 
-  // Get the last screenshot from the screenshots state array and set its data URL as the source of the image.
-  const lastScreenshot =
-    screenshots.length > 0 ? screenshots[screenshots.length - 1] : "";
-
-  async function submit() {
-    const lastScreenshot = screenshots[screenshots.length - 1];
-
-    const blob = await fetch(lastScreenshot).then((r) => r.blob());
+  async function submit(screenshot) {
+    const blob = await fetch(screenshot).then((r) => r.blob());
     const file = new File([blob], "screenshot.jpg", { type: "image/jpeg" });
 
     const url =
@@ -114,20 +79,6 @@ function ChordDetect() {
 
   return (
     <div className="app">
-      <div>
-        <button onClick={() => setIsRunning(!isRunning)}>
-          {isRunning ? "Turn Off" : "Turn On"}
-        </button>
-        {isRunning && (
-          <>
-            <canvas
-              id="canvas"
-              style={{ width: "400px", height: "200px" }}
-            ></canvas>
-            <img src={lastScreenshot} alt="Last Screenshot" />
-          </>
-        )}
-      </div>
       <div>{prediction}</div>
     </div>
   );

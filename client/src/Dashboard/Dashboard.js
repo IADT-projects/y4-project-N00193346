@@ -49,7 +49,6 @@ const Dashboard = ({ setUserDetails, isUserInRoom }) => {
       </Container>
       <BottomContainer>
         <Amp />
-        <ChordDetect />
       </BottomContainer>
     </>
   );

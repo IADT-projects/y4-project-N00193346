@@ -7,7 +7,7 @@ import {
   setGuitarStream,
   setLocalStream,
 } from "../../store/actions/roomActions";
-import AmpContext from "./AmpContext";
+import ChordDetect from "../Chord/ChordDetect";
 
 export const Container = styled.div`
   margin-top: 10px;
@@ -21,7 +21,8 @@ export const Container = styled.div`
 `;
 
 function Amp() {
-  const [onButton, setOn] = useState(0);
+  const [onButton, setOn] = useState(false);
+  const [onChord, setChord] = useState(false);
   const [volume, setVolume] = useState(0.5);
   // const [bass, setBass] = useState(0);
   // const [mid, setMid] = useState(0);
@@ -114,9 +115,10 @@ function Amp() {
     let guitarAudio = source;
     console.log("Guitar Audio :" + guitarAudio);
     store.dispatch(setGuitarStream(guitarAudio));
+    setChord(onButton);
   };
 
-  if (onButton === 1) {
+  if (onButton) {
     setupContext();
     // handleBassChange();
     // handleMidChange();
@@ -126,7 +128,9 @@ function Amp() {
   return (
     // <AmpContext.Provider value={guitarAudio}>
     <>
-      <button onClick={() => setOn(1)}>Turn On Amplifer</button>
+      <button onClick={() => setOn(!onButton)}>
+        {onButton ? "Turn Off Amplifier" : "Turn On Amplifier"}
+      </button>
       <Container>
         <RangeInput
           labelFor="Volume"
@@ -140,6 +144,7 @@ function Amp() {
           inputId="treble"
           setParentValue={setTreble}
         /> */}
+        <ChordDetect onChord={onChord} />
       </Container>
     </>
     // </AmpContext.Provider>
