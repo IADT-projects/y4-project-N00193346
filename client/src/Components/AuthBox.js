@@ -1,6 +1,7 @@
 import React from "react";
 import Box from "@mui/material/Box";
 import { styled } from "@mui/system";
+import guitarImage from "./../authPages/Images/guitar.jpg";
 
 const BoxContainer = styled("div")({
   width: "100%",
@@ -8,7 +9,8 @@ const BoxContainer = styled("div")({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  background: "#5865F2",
+  backgroundImage: `url(${guitarImage})`, // Use the imported image as backgroundImage
+  backgroundSize: "cover",
 });
 function AuthBox(props) {
   return (
@@ -18,7 +20,7 @@ function AuthBox(props) {
           sx={{
             width: 700,
             height: 400,
-            bgcolor: "#36393f",
+            bgcolor: "rgba(0, 0, 0, 0.5)",
             borderRadius: "5px",
             boxShadow: "0 2px 10px 0 rgb ( 0 0 0 /20%)",
             display: "flex",

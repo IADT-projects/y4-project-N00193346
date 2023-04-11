@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 import { styled } from "@mui/system";
 
 const RedirectText = styled("span")({
-  color: "#00AFF4",
+  color: "#1A71FF",
   fontWeight: 500,
   cursor: "pointer",
 });
@@ -16,7 +16,7 @@ const RedirectInfo = ({
 }) => {
   return (
     <Typography
-      sx={{ color: "#72767d" }}
+      sx={{ color: "#FFFFFF" }}
       style={additionalStyles ? additionalStyles : {}}
       variant="subtitle2"
     >

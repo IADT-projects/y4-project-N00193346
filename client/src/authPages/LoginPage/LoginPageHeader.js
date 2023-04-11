@@ -5,7 +5,7 @@ function LoginPageHeader() {
   return (
     <>
       <Typography variant="h5" sx={{ color: "white" }}>
-        Welcome back
+        Intelligent Instruments Interface
       </Typography>
       <Typography sx={{ color: "#b9bbbe" }}>Sign in </Typography>
     </>

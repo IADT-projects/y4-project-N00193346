@@ -6,7 +6,6 @@ const PrimaryButton = ({ label, additionalStyles, disabled, onClick }) => {
     <Button
       variant="contained"
       sx={{
-        bgcolor: "#5865F2",
         color: "white",
         textTransform: "none",
         fontSize: "16px",
