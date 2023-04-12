@@ -12,7 +12,7 @@ const MainContainer = styled("div")({
   flexDirection: "column",
   alignItems: "center",
   borderRadius: "10px",
-  background: "rgba(0, 0, 0, 0.5)",
+  background: "rgba(0, 0, 0, 0.8)",
   margin: "10px",
 });
 

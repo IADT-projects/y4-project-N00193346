@@ -10,7 +10,7 @@ const MainContainer = styled("div")({
   height: "97%",
 
   borderRadius: "10px",
-  background: "rgba(0, 0, 0, 0.5)",
+  background: "rgba(0, 0, 0, 0.8)",
   margin: "10px",
   display: "flex",
   flexDirection: "column",
