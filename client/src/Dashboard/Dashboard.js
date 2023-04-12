@@ -8,20 +8,22 @@ import { logout } from "../utils/auth";
 import { connect } from "react-redux";
 import { getActions } from "../store/actions/authActions";
 import { connectWithSocketServer } from "../realtimeCommunication/socketConnection";
-import ChordDisplay from "./Chord/ChordDisplay";
+import guitarImage from "../authPages/Images/guitar2.jpg";
 
 import Room from "./Room/Room";
 import Amp from "./Amp/Amp";
-import ChordDetect from "./Chord/ChordDetect";
 
 const Container = styled("div")({
   width: "100%",
   height: "80vh",
   display: "flex",
+  backgroundImage: `url(${guitarImage})`,
+  backgroundSize: "cover",
 });
 
 const BottomContainer = styled("div")({
   width: "100%",
+  marginTop: "10px",
   height: "10vh",
   display: "flex",
   justifyContent: "space-between",

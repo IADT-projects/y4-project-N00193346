@@ -6,8 +6,11 @@ import MessengerContent from "./MessengerContent";
 
 const MainContainer = styled("div")({
   flexGrow: 1,
-  backgroundColor: "#36393f",
-  marginTop: "48px",
+  borderRadius: "10px",
+  background: "rgba(0, 0, 0, 0.5)",
+  margin: "10px",
+  marginTop: "70px",
+
   display: "flex",
 });
 

@@ -6,12 +6,15 @@ import FriendsList from "./FriendsList/FriendsList";
 import PendingInvitationsList from "./PendingInvitationsList/PendingInvitationsList";
 
 const MainContainer = styled("div")({
-  width: "224px",
-  height: "100%",
+  width: "200px",
+  height: "97%",
+
+  borderRadius: "10px",
+  background: "rgba(0, 0, 0, 0.5)",
+  margin: "10px",
   display: "flex",
   flexDirection: "column",
   alignItems: "center",
-  backgroundColor: "#2F3136",
 });
 
 const FriendsSideBar = () => {

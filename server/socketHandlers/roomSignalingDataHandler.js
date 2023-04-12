@@ -5,4 +5,4 @@ const roomSignalingDataHandler = (socket, data) => {
   socket.to(connUserSocketId).emit("conn-signal", signalingData);
 };
 
-modules.exports = roomSignalingDataHandler;
+module.exports = roomSignalingDataHandler;

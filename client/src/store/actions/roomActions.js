@@ -55,7 +55,6 @@ export const setLocalStream = (localStream) => {
 };
 
 export const setGuitarStream = (guitarStream) => {
-  console.log("Set guitarStream " + guitarStream);
   return {
     type: roomActions.SET_GUITAR_STREAM,
     guitarStream,
@@ -63,7 +62,6 @@ export const setGuitarStream = (guitarStream) => {
 };
 
 export const setGuitarChord = (guitarChord) => {
-  console.log("The guitar Chord in set" + guitarChord);
   return {
     type: roomActions.SET_GUITAR_CHORD,
     guitarChord,

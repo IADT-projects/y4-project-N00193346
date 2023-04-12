@@ -20,6 +20,7 @@ const Input = styled("input")({
   borderRadius: "8px",
   fontSize: "14px",
   padding: "0 10px",
+  marginBottom: "10px",
 });
 
 const NewMessageInput = ({ chosenChatDetails }) => {
