@@ -25,8 +25,6 @@ const BottomContainer = styled("div")({
   width: "100%",
   marginTop: "10px",
   height: "10vh",
-  display: "flex",
-  justifyContent: "space-between",
 });
 const Dashboard = ({ setUserDetails, isUserInRoom }) => {
   useEffect(() => {

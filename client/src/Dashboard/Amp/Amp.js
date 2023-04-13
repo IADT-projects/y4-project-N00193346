@@ -8,16 +8,77 @@ import {
   setLocalStream,
 } from "../../store/actions/roomActions";
 import ChordDetect from "../Chord/ChordDetect";
+import ampTexture from "../../authPages/Images/ampTexture.PNG";
+import AmplifierFont from "./Font/Amplify.ttf";
 
 export const Container = styled.div`
-  margin-top: 10px;
-  display: grid;
+  display: flex;
+  height: 20vh;
   grid-template-columns: auto min-content;
   justify-content: center;
-  justify-items: end;
-  align-items: center;
+
   gap: 5px 10px;
-  background-color: grey;
+  background-color: #b2a89b;
+  margin-top: -15px;
+`;
+
+export const AmpContainer = styled.div`
+  height: 90%;
+  width: 50%;
+  border-radius: 10px;
+  border: 20px solid #000000;
+  box-sizing: border-box;
+  background-image: url(${ampTexture});
+  background-repeat: repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+
+  @font-face {
+    font-family: "Amplifier";
+    src: url(${AmplifierFont}) format("truetype");
+    font-weight: normal;
+    font-style: normal;
+  }
+  font-family: "Amplifier";
+  color: white;
+  font-size: 56px;
+`;
+
+export const AmpControls = styled.div`
+  height: 30%;
+  width: 100%;
+  background-color: #e6c375;
+  border-top: 5px solid #000000;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  display: flex;
+
+  align-items: center;
+`;
+
+export const SwitchContainer = styled.div`
+  height: 80%;
+  width: 30px;
+  border-top: 1px solid #000000;
+  background-color: black;
+  margin: 10px;
+`;
+
+export const SwitchOff = styled.div`
+  height: 60%;
+  margin: 5px;
+  background-color: red;
+  border-bottom: 3px solid #8b0000;
+`;
+
+export const SwitchOn = styled.div`
+  height: 60%;
+  margin: 5px;
+  background-color: red;
+  border-top: 3px solid #8b0000;
 `;
 
 function Amp() {
@@ -129,12 +190,13 @@ function Amp() {
     // handleTrebleChange();
   }
 
+  const handleClick = () => {
+    setOn(!onButton);
+  };
+
   return (
     // <AmpContext.Provider value={guitarAudio}>
     <>
-      <button onClick={() => setOn(!onButton)}>
-        {onButton ? "Turn Off Amplifier" : "Turn On Amplifier"}
-      </button>
       <Container>
         <RangeInput
           labelFor="Volume"
@@ -148,7 +210,16 @@ function Amp() {
           inputId="treble"
           setParentValue={setTreble}
         /> */}
-        <ChordDetect onChord={onChord} />
+
+        <AmpContainer>
+          Intelligent Instruments
+          <AmpControls>
+            <SwitchContainer onClick={handleClick}>
+              {onButton ? <SwitchOn /> : <SwitchOff />}
+            </SwitchContainer>
+            <ChordDetect onChord={onChord} />
+          </AmpControls>
+        </AmpContainer>
       </Container>
     </>
     // </AmpContext.Provider>
