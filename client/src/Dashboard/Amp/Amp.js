@@ -81,7 +81,7 @@ export const SwitchOn = styled.div`
   border-top: 3px solid #8b0000;
 `;
 
-function Amp() {
+const Amp = () => {
   const [onButton, setOn] = useState(false);
   const [onChord, setChord] = useState(false);
   const [volume, setVolume] = useState(0.5);
@@ -198,11 +198,6 @@ function Amp() {
     // <AmpContext.Provider value={guitarAudio}>
     <>
       <Container>
-        <RangeInput
-          labelFor="Volume"
-          inputId="volume"
-          setParentValue={setVolume}
-        />
         {/* <RangeInput labelFor="Bass" inputId="bass" setParentValue={setBass} />
         <RangeInput labelFor="Mid" inputId="mid" setParentValue={setMid} />
         <RangeInput
@@ -217,6 +212,11 @@ function Amp() {
             <SwitchContainer onClick={handleClick}>
               {onButton ? <SwitchOn /> : <SwitchOff />}
             </SwitchContainer>
+            <RangeInput
+              labelFor="VOLUME"
+              inputId="volume"
+              setParentValue={setVolume}
+            />
             <ChordDetect onChord={onChord} />
           </AmpControls>
         </AmpContainer>
@@ -224,7 +224,7 @@ function Amp() {
     </>
     // </AmpContext.Provider>
   );
-}
+};
 
 // const mapStoreStateToProps = ({ room }) => {
 //   return {

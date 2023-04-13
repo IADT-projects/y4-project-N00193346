@@ -77,11 +77,7 @@ function ChordDetect({ onChord }) {
       .catch((error) => setPrediction("Error: " + error.message));
   }
 
-  return (
-    <div className="app">
-      <div>{prediction}</div>
-    </div>
-  );
+  return <div className="app">{/* <div>{prediction}</div> */}</div>;
 }
 
 export default ChordDetect;
