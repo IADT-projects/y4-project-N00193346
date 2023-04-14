@@ -85,9 +85,9 @@ const Amp = () => {
   const [onButton, setOn] = useState(false);
   const [onChord, setChord] = useState(false);
   const [volume, setVolume] = useState(0.5);
-  // const [bass, setBass] = useState(0);
-  // const [mid, setMid] = useState(0);
-  // const [treble, setTreble] = useState(0);
+  const [bass, setBass] = useState(0);
+  const [mid, setMid] = useState(0);
+  const [treble, setTreble] = useState(0);
 
   const context = new AudioContext();
   const gainNode = new GainNode(context, { gain: volume });
@@ -198,14 +198,6 @@ const Amp = () => {
     // <AmpContext.Provider value={guitarAudio}>
     <>
       <Container>
-        {/* <RangeInput labelFor="Bass" inputId="bass" setParentValue={setBass} />
-        <RangeInput labelFor="Mid" inputId="mid" setParentValue={setMid} />
-        <RangeInput
-          labelFor="Treble"
-          inputId="treble"
-          setParentValue={setTreble}
-        /> */}
-
         <AmpContainer>
           Intelligent Instruments
           <AmpControls>
@@ -216,6 +208,17 @@ const Amp = () => {
               labelFor="VOLUME"
               inputId="volume"
               setParentValue={setVolume}
+            />
+            <RangeInput
+              labelFor="BASS"
+              inputId="bass"
+              setParentValue={setBass}
+            />
+            <RangeInput labelFor="MID" inputId="mid" setParentValue={setMid} />
+            <RangeInput
+              labelFor="TREBLE"
+              inputId="treble"
+              setParentValue={setTreble}
             />
             <ChordDetect onChord={onChord} />
           </AmpControls>

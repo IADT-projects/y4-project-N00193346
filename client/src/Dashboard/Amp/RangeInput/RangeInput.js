@@ -7,6 +7,8 @@ export const Container = styled.div`
   align-items: center;
   justify-content: center;
   font-family: initial;
+  margin-left: 20px;
+  width: 45px;
 `;
 
 export const RangeLabel = styled.label`
