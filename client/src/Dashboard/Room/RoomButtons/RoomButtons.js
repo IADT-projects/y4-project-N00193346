@@ -8,9 +8,9 @@ import { connect } from "react-redux";
 import { getActions } from "../../../store/actions/roomActions";
 
 const MainContainer = styled("div")({
-  height: "15%",
+  height: "10%",
   width: "100%",
-  backgroundColor: "#5865f2",
+  backgroundColor: "#1A71FF",
   borderTopLeftRadius: "8px",
   borderTopRightRadius: "8px",
   display: "flex",

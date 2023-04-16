@@ -13,7 +13,8 @@ const MainContainer = styled("div")({
 const VideoWrapper = styled("div")({
   position: "absolute",
   top: 0,
-  right: 0,
+  left: "50%",
+  transform: "translateX(-50%)",
 });
 
 const LocalVideoWrapper = styled("div")({
@@ -24,7 +25,7 @@ const LocalVideoWrapper = styled("div")({
 
 const ChordDisplayWrapper = styled("div")({
   display: "flex",
-  justifyContent: "center",
+  justifyContent: "flex-end",
   alignItems: "flex-end",
   width: "100%",
   height: "100%",
@@ -37,9 +38,11 @@ const VideosContainer = ({
 }) => {
   return (
     <MainContainer>
-      {remoteStreams.map((stream) => (
-        <Video stream={stream} key={stream.id} />
-      ))}
+      <VideoWrapper>
+        {remoteStreams.map((stream) => (
+          <Video stream={stream} key={stream.id} />
+        ))}
+      </VideoWrapper>
       {localStream && (
         <LocalVideoWrapper>
           <Video stream={localStream} isLocalStream />
