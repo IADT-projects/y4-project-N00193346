@@ -12,14 +12,17 @@ const BoxContainer = styled("div")({
   backgroundImage: `url(${guitarImage})`,
   backgroundSize: "cover",
 });
+
 function AuthBox(props) {
+  const { height } = props;
+
   return (
     <>
       <BoxContainer>
         <Box
           sx={{
             width: 700,
-            height: 400,
+            height: height || 400,
             bgcolor: "rgba(0, 0, 0, 0.5)",
             borderRadius: "5px",
             boxShadow: "0 2px 10px 0 rgb ( 0 0 0 /20%)",

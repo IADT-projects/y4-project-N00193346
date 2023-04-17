@@ -36,7 +36,7 @@ const RegisterPage = ({ register }) => {
 
   return (
     <>
-      <AuthBox>
+      <AuthBox height={550}>
         <Typography variant="h5" sx={{ color: "white" }}>
           Create an Account
         </Typography>

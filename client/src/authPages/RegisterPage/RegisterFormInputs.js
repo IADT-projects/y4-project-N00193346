@@ -44,6 +44,7 @@ const RegisterFormInputs = (props) => {
         placeholder="Enter Password"
       />
       <DropFormInput
+        placeholder="Select an Account"
         value={account}
         setValue={setAccount}
         label="Account"
