@@ -1,5 +1,6 @@
 import React from "react";
 import { styled } from "@mui/system";
+import store from "../../store/store";
 import DropdownMenu from "./DropdownMenu";
 import CallSettingsButton from "./CallSettingsButton";
 
@@ -21,9 +22,12 @@ const MainContainer = styled("div")({
 });
 
 const AppBar = () => {
+  const userAccount = store.getState().auth.userDetails?.account;
+
   return (
     <MainContainer>
-      <CallSettingsButton />
+      {userAccount === "instructor" && <CallSettingsButton />}
+
       <ChosenOptionLabel />
       <DropdownMenu />
     </MainContainer>
