@@ -2,15 +2,15 @@ import React, { useEffect, useRef } from "react";
 import { styled } from "@mui/system";
 
 const MainContainer = styled("div")({
-  height: "50%",
-  width: "100%",
-  // backgroundColor: "black",
-  // borderRadius: "8px",
+  display: "grid",
+  gridTemplateColumns: "repeat(2, 1fr)",
+  gridGap: "16px",
 });
 
 const VideoEl = styled("video")(({ isLocalStream }) => ({
-  width: isLocalStream ? "300px" : "500px",
-  height: isLocalStream ? "300px" : "500px",
+  width: isLocalStream ? "300px" : "700px",
+  height: isLocalStream ? "300px" : "400px",
+  objectFit: "cover",
 }));
 
 const Video = ({ stream, isLocalStream }) => {
