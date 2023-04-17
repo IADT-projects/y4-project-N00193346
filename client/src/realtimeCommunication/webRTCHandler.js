@@ -32,23 +32,72 @@ const defaultConstraints = {
 export const getLocalStreamPreview = (onlyAudio = false, callbackFunc) => {
   const constraints = onlyAudio ? onlyAudioConstraints : defaultConstraints;
   const guitar = store.getState().room.guitarStream;
+  const numCams = store.getState().room.numCameras;
 
   console.log("Guitar is: " + guitar);
   const mediaStream = guitar?.mediaStream;
 
-  navigator.mediaDevices
-    .getUserMedia(constraints)
-    .then((stream) => {
-      if (mediaStream) {
-        stream.addTrack(mediaStream.getAudioTracks()[0]);
-      }
-      store.dispatch(setLocalStream(stream));
-      callbackFunc();
-    })
-    .catch((err) => {
-      console.log(err);
-      console.log("Cannot get an access to local stream");
-    });
+  if (numCams >= 2) {
+    navigator.mediaDevices
+      .enumerateDevices()
+      .then((devices) => {
+        console.log("Enumerated devices:", devices);
+
+        const videoDevices = devices.filter(
+          (device) => device.kind === "videoinput"
+        );
+
+        const constraints1 = {
+          video: { deviceId: videoDevices[0].deviceId },
+          audio: true,
+        };
+        const constraints2 = { video: { deviceId: videoDevices[1].deviceId } };
+
+        Promise.all([
+          navigator.mediaDevices.getUserMedia(constraints1),
+          navigator.mediaDevices.getUserMedia(constraints2),
+        ])
+          .then(([stream1, stream2]) => {
+            console.log("Stream 1:", stream1);
+            console.log("Stream 2:", stream2);
+
+            const localStream = new MediaStream();
+            localStream.addTrack(stream1.getVideoTracks()[0]);
+            localStream.addTrack(stream2.getVideoTracks()[0]);
+
+            if (mediaStream) {
+              localStream.addTrack(mediaStream.getAudioTracks()[0]);
+            }
+
+            console.log("Local stream:", localStream);
+
+            store.dispatch(setLocalStream(localStream));
+            callbackFunc();
+          })
+          .catch((err) => {
+            console.log(err);
+            console.log("Failed to get access to local stream");
+          });
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("Failed to enumerate devices");
+      });
+  } else {
+    navigator.mediaDevices
+      .getUserMedia(constraints)
+      .then((stream) => {
+        if (mediaStream) {
+          stream.addTrack(mediaStream.getAudioTracks()[0]);
+        }
+        store.dispatch(setLocalStream(stream));
+        callbackFunc();
+      })
+      .catch((err) => {
+        console.log(err);
+        console.log("Cannot get an access to local stream");
+      });
+  }
 };
 
 let peers = {};

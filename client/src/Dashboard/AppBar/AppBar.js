@@ -1,6 +1,7 @@
 import React from "react";
 import { styled } from "@mui/system";
 import DropdownMenu from "./DropdownMenu";
+import CallSettingsButton from "./CallSettingsButton";
 
 import ChosenOptionLabel from "./ChosenOptionLabel";
 
@@ -22,6 +23,7 @@ const MainContainer = styled("div")({
 const AppBar = () => {
   return (
     <MainContainer>
+      <CallSettingsButton />
       <ChosenOptionLabel />
       <DropdownMenu />
     </MainContainer>

@@ -3,6 +3,7 @@ export const roomActions = {
   SET_ROOM_DETAILS: "ROOM.SET_ROOM_DETAILS",
   SET_ACTIVE_ROOMS: "ROOM.SET_ACTIVE_ROOMS",
   SET_LOCAL_STREAM: "ROOM.SET_LOCAL_STREAM",
+
   SET_GUITAR_AUDIO: "ROOM.SET_GUITAR_AUDIO",
   SET_REMOTE_STREAMS: "ROOM.SET_REMOTE_STREAMS",
   SET_AUDIO_ONLY: "ROOM.SET_AUDIO_ONLY",
@@ -11,6 +12,7 @@ export const roomActions = {
   UPDATE_SOURCE: "ROOM.UPDATE_SOURCE",
   SET_GUITAR_STREAM: "ROOM.SET_GUITAR_STREAM",
   SET_GUITAR_CHORD: "ROOM.SET_GUITAR_CHORD",
+  SET_NUM_CAMERAS: "ROOM.SET_NUM_CAMERAS",
 };
 
 export const setOpenRoom = (
@@ -51,6 +53,14 @@ export const setLocalStream = (localStream) => {
   return {
     type: roomActions.SET_LOCAL_STREAM,
     localStream,
+  };
+};
+
+export const setNumCameras = (numCameras) => {
+  console.log("Setting num cameras" + numCameras);
+  return {
+    type: roomActions.SET_NUM_CAMERAS,
+    numCameras,
   };
 };
 

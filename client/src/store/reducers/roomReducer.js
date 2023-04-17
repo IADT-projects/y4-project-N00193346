@@ -6,6 +6,7 @@ const initState = {
   roomDetails: null,
   activeRooms: [],
   localStream: null,
+  numCameras: 1,
   remoteStreams: [],
   audioOnly: false,
   screenSharingStream: null,
@@ -40,6 +41,13 @@ const reducer = (state = initState, action) => {
       return {
         ...state,
         localStream: action.localStream,
+      };
+
+    case roomActions.SET_NUM_CAMERAS:
+      console.log("Setting number of cameras to " + action.numCameras);
+      return {
+        ...state,
+        numCameras: action.numCameras,
       };
     case roomActions.SET_GUITAR_STREAM:
       console.log("Updating Guitar Audio in store... " + action.guitarStream);

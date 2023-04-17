@@ -2,10 +2,10 @@ import React, { useEffect, useRef } from "react";
 import { styled } from "@mui/system";
 
 const MainContainer = styled("div")({
-  // height: "50%",
-  // width: "100%",
-  // // backgroundColor: "black",
-  // // borderRadius: "8px",
+  height: "50%",
+  width: "100%",
+  // backgroundColor: "black",
+  // borderRadius: "8px",
 });
 
 const VideoEl = styled("video")(({ isLocalStream }) => ({
@@ -14,25 +14,40 @@ const VideoEl = styled("video")(({ isLocalStream }) => ({
 }));
 
 const Video = ({ stream, isLocalStream }) => {
-  const videoRef = useRef();
+  const videoRefs = useRef([]);
 
   useEffect(() => {
-    const video = videoRef.current;
-    video.srcObject = stream;
-
-    video.onloadedmetadata = () => {
-      video.play();
-    };
+    const videoTracks = stream.getVideoTracks();
+    if (videoTracks.length === 2) {
+      // If there are 2 video tracks, apply each track to its own videoEl
+      videoTracks.forEach((track, index) => {
+        const video = videoRefs.current[index];
+        video.srcObject = new MediaStream([track]);
+        video.onloadedmetadata = () => {
+          video.play();
+        };
+      });
+    } else {
+      // If there is only 1 video track, apply it to the existing videoEl
+      const video = videoRefs.current[0];
+      video.srcObject = stream;
+      video.onloadedmetadata = () => {
+        video.play();
+      };
+    }
   }, [stream]);
 
   return (
     <MainContainer>
-      <VideoEl
-        ref={videoRef}
-        autoPlay
-        muted={isLocalStream ? true : false}
-        isLocalStream={isLocalStream}
-      />
+      {Array.from({ length: 2 }).map((_, index) => (
+        <VideoEl
+          key={index}
+          ref={(ref) => (videoRefs.current[index] = ref)}
+          autoPlay
+          muted={isLocalStream ? true : false}
+          isLocalStream={isLocalStream}
+        />
+      ))}
     </MainContainer>
   );
 };
