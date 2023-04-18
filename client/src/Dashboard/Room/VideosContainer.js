@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { styled } from "@mui/system";
 import { connect } from "react-redux";
 import Video from "./Video";
@@ -36,7 +36,6 @@ const VideosContainer = ({
   remoteStreams,
   screenSharingStream,
 }) => {
-  // Function to count video tracks in a stream
   const countVideoTracks = (stream) => {
     let videoTracksCount = 0;
     if (stream && stream.getVideoTracks) {
@@ -45,8 +44,7 @@ const VideosContainer = ({
     return videoTracksCount;
   };
 
-  // Console log video track count for each remote stream
-  React.useEffect(() => {
+  useEffect(() => {
     remoteStreams.forEach((stream) => {
       const videoTracksCount = countVideoTracks(stream);
       console.log(

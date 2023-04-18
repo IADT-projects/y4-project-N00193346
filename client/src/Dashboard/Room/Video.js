@@ -16,8 +16,10 @@ const VideoEl = styled("video")(({ isLocalStream }) => ({
 const Video = ({ stream, isLocalStream }) => {
   const videoRefs = useRef([]);
 
+  const videoTracks = stream.getVideoTracks();
+  const audioTracks = stream.getAudioTracks();
+
   useEffect(() => {
-    const videoTracks = stream.getVideoTracks();
     if (videoTracks.length === 2) {
       // If there are 2 video tracks, apply each track to its own videoEl
       videoTracks.forEach((track, index) => {
@@ -35,11 +37,18 @@ const Video = ({ stream, isLocalStream }) => {
         video.play();
       };
     }
+
+    // Assign audio tracks to the first video element
+    if (audioTracks.length > 0) {
+      console.log("Audio Tracks:", audioTracks);
+      const video = videoRefs.current[0];
+      video.srcObject.addTrack(audioTracks[0]);
+    }
   }, [stream]);
 
   return (
     <MainContainer>
-      {Array.from({ length: 2 }).map((_, index) => (
+      {Array.from({ length: videoTracks.length }).map((_, index) => (
         <VideoEl
           key={index}
           ref={(ref) => (videoRefs.current[index] = ref)}

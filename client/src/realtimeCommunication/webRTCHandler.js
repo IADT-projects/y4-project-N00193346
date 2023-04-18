@@ -64,6 +64,7 @@ export const getLocalStreamPreview = (onlyAudio = false, callbackFunc) => {
             const localStream = new MediaStream();
             localStream.addTrack(stream1.getVideoTracks()[0]);
             localStream.addTrack(stream2.getVideoTracks()[0]);
+            localStream.addTrack(stream1.getAudioTracks()[0]);
 
             if (mediaStream) {
               localStream.addTrack(mediaStream.getAudioTracks()[0]);
@@ -110,7 +111,7 @@ export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
   const combinedTracks = [...localStream.getTracks()];
 
   if (guitar && guitar.mediaStream) {
-    combinedTracks.push(guitar.mediaStream.getAudioTracks()[0]);
+    combinedTracks.push(...guitar.mediaStream.getTracks());
   }
 
   const combinedStream = new MediaStream(combinedTracks);
