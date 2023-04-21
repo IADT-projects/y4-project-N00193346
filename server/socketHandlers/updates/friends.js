@@ -4,15 +4,17 @@ const serverStore = require("../../serverStore");
 
 const updateFriendsPendingInvitations = async (userId) => {
   try {
+    //Find friend invites where the userID is the receiver and populate the details
     const pendingInvitations = await FriendInvitation.find({
       receiverId: userId,
     }).populate("senderId", "_id username email");
 
-    // find all active connections of specific userId
+    //Find if the user is active
     const receiverList = serverStore.getActiveConnections(userId);
 
     const io = serverStore.getSocketServerInstance();
 
+    //For each socket ID, emit that user's friend invitations
     receiverList.forEach((receiverSocketId) => {
       io.to(receiverSocketId).emit("friends-invitations", {
         pendingInvitations: pendingInvitations ? pendingInvitations : [],
