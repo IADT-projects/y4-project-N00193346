@@ -6,14 +6,15 @@ const postReject = async (req, res) => {
     const { id } = req.body;
     const { userId } = req.user;
 
-    // remove that invitation from friend invitations collection
+    // Find the invitation
     const invitationExists = await FriendInvitation.exists({ _id: id });
 
+    //Remove the initation
     if (invitationExists) {
       await FriendInvitation.findByIdAndDelete(id);
     }
 
-    // update pending invitations
+    //Update list of friends pending invitations
     friendsUpdates.updateFriendsPendingInvitations(userId);
 
     return res.status(200).send("Invitation succesfully rejected");
