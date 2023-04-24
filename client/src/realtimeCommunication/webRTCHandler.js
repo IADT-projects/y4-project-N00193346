@@ -4,19 +4,13 @@ import Peer from "simple-peer";
 import * as socketConnection from "./socketConnection";
 
 const getConfiguration = () => {
-  const turnIceServers = null;
-
-  if (turnIceServers) {
-  } else {
-    console.warn("Using only STUN server");
-    return {
-      iceServers: [
-        {
-          urls: "stun:stun.l.google.com:19302",
-        },
-      ],
-    };
-  }
+  return {
+    iceServers: [
+      {
+        urls: "stun:stun.l.google.com:19302",
+      },
+    ],
+  };
 };
 
 const onlyAudioConstraints = {
@@ -37,22 +31,26 @@ export const getLocalStreamPreview = (onlyAudio = false, callbackFunc) => {
   console.log("Guitar is: " + guitar);
   const mediaStream = guitar?.mediaStream;
 
+  // Checking if there are at least two cameras available
   if (numCams >= 2) {
+    // Enumerating all media devices
     navigator.mediaDevices
       .enumerateDevices()
       .then((devices) => {
         console.log("Enumerated devices:", devices);
 
+        // Filtering video input devices
         const videoDevices = devices.filter(
           (device) => device.kind === "videoinput"
         );
-
+        // Setting constraints for the first camera
         const constraints1 = {
           video: { deviceId: videoDevices[0].deviceId },
           audio: true,
         };
+        // Setting constraints for the second camera
         const constraints2 = { video: { deviceId: videoDevices[1].deviceId } };
-
+        // Getting media stream for the first and second camera
         Promise.all([
           navigator.mediaDevices.getUserMedia(constraints1),
           navigator.mediaDevices.getUserMedia(constraints2),
@@ -60,8 +58,9 @@ export const getLocalStreamPreview = (onlyAudio = false, callbackFunc) => {
           .then(([stream1, stream2]) => {
             console.log("Stream 1:", stream1);
             console.log("Stream 2:", stream2);
-
+            // Creating a new MediaStream object
             const localStream = new MediaStream();
+            //Adding tracks to media stream
             localStream.addTrack(stream1.getVideoTracks()[0]);
             localStream.addTrack(stream2.getVideoTracks()[0]);
             localStream.addTrack(stream1.getAudioTracks()[0]);
@@ -85,12 +84,16 @@ export const getLocalStreamPreview = (onlyAudio = false, callbackFunc) => {
         console.log("Failed to enumerate devices");
       });
   } else {
+    //Get user Devices
     navigator.mediaDevices
+      //Check constraints: audio only?
       .getUserMedia(constraints)
       .then((stream) => {
+        //If there is a media/guitar stream, add it
         if (mediaStream) {
           stream.addTrack(mediaStream.getAudioTracks()[0]);
         }
+        //Set local stream in redux store
         store.dispatch(setLocalStream(stream));
         callbackFunc();
       })
@@ -105,15 +108,20 @@ let peers = {};
 
 // Create a new PeerConnection object
 export const prepareNewPeerConnection = (connUserSocketId, isInitiator) => {
+  //Get Local Stream
   const localStream = store.getState().room.localStream;
+  //Get guitar Stream
   const guitar = store.getState().room.guitarStream;
 
+  // Turn local stream into combined tracks
   const combinedTracks = [...localStream.getTracks()];
 
+  // If guitar stream isn't empty, push the tracks to combined tracks
   if (guitar && guitar.mediaStream) {
     combinedTracks.push(...guitar.mediaStream.getTracks());
   }
 
+  //Create a new media stream from combined tracks
   const combinedStream = new MediaStream(combinedTracks);
 
   // Log whether the current user is the initiator of the connection or not
