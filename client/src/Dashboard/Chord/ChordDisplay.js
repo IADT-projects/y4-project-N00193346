@@ -6,8 +6,6 @@ import D from "./ChordImages/D.png";
 import C from "./ChordImages/C.png";
 import E from "./ChordImages/E.png";
 
-import store from "../../store/store";
-
 function ChordDisplay(props) {
   const { guitarChord } = props;
   const [chordImage, setChordImage] = useState(null);

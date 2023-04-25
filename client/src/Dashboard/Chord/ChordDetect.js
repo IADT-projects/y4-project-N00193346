@@ -9,8 +9,7 @@ function ChordDetect({ onChord }) {
 
   useEffect(() => {
     if (onChord) {
-      // When the component mounts, create a Spectrogram instance.
-      const canvas = document.createElement("canvas"); // Create a hidden canvas element
+      const canvas = document.createElement("canvas");
       const spectro = Spectrogram(canvas, {
         audio: {
           enable: false,
@@ -37,7 +36,7 @@ function ChordDetect({ onChord }) {
 
         const intervalId = setInterval(() => {
           const screenshot = canvas.toDataURL();
-          submit(screenshot); // Pass the screenshot to submit function
+          submit(screenshot);
         }, 4000);
 
         return () => {

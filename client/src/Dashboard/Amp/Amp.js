@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import store from "../../store/store";
 import RangeInput from "./RangeInput/RangeInput";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import {
   setGuitarStream,
@@ -195,7 +195,6 @@ const Amp = () => {
   };
 
   return (
-    // <AmpContext.Provider value={guitarAudio}>
     <>
       <Container>
         <AmpContainer>
@@ -225,15 +224,8 @@ const Amp = () => {
         </AmpContainer>
       </Container>
     </>
-    // </AmpContext.Provider>
   );
 };
-
-// const mapStoreStateToProps = ({ room }) => {
-//   return {
-//     ...room,
-//   };
-// };
 
 const mapActionsToProps = (dispatch) => {
   return {

@@ -52,7 +52,7 @@ const RangeInput = ({ labelFor, setParentValue, inputId }) => {
 
   const handleChange = (newValue) => {
     setValue(newValue);
-    setParentValue(1 - newValue); // Reverse the value
+    setParentValue(1 - newValue);
   };
 
   const handleMouseDown = (event) => {
@@ -80,7 +80,7 @@ const RangeInput = ({ labelFor, setParentValue, inputId }) => {
   const handleContainerClick = (event) => {
     const containerWidth = event.target.offsetWidth;
     const clickX = event.clientX - event.target.getBoundingClientRect().left;
-    const newValue = clickX / containerWidth; // Reverse the value
+    const newValue = clickX / containerWidth;
     handleChange(newValue);
   };
 

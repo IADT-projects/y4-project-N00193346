@@ -76,11 +76,6 @@ const registerSocketServer = (server) => {
     socket.on("disconnect", () => {
       disconnectHandler(socket);
     });
-
-    socket.on("receiveChord", (data) => {
-      console.log("receivedChord is working");
-      io.emit("sendChord", data);
-    });
   });
 
   setInterval(() => {
