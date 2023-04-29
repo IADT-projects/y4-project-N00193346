@@ -56,11 +56,6 @@ const registerSocketServer = (server) => {
       roomJoinHandler(socket, data);
     });
 
-    socket.on("receiveChord", (data) => {
-      console.log(data);
-      io.emit("sendChord", data);
-    });
-
     socket.on("room-leave", (data) => {
       roomLeaveHandler(socket, data);
     });
@@ -75,6 +70,10 @@ const registerSocketServer = (server) => {
 
     socket.on("disconnect", () => {
       disconnectHandler(socket);
+    });
+
+    socket.on("receiveChord", ({ data, remoteUsers, socketId }) => {
+      roomChordHandler(socket, data, remoteUsers, socketId);
     });
   });
 

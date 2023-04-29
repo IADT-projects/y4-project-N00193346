@@ -6,6 +6,11 @@ const apiClient = axios.create({
   timeout: 1000,
 });
 
+// const apiClient = axios.create({
+//   baseURL: "http://localhost:5002/api",
+//   timeout: 1000,
+// });
+
 apiClient.interceptors.request.use(
   (config) => {
     const userDetails = localStorage.getItem("user");

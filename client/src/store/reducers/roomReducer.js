@@ -50,13 +50,13 @@ const reducer = (state = initState, action) => {
         numCameras: action.numCameras,
       };
     case roomActions.SET_GUITAR_STREAM:
-      console.log("Updating Guitar Audio in store... " + action.guitarStream);
+      // console.log("Updating Guitar Audio in store... " + action.guitarStream);
       return {
         ...state,
         guitarStream: action.guitarStream,
       };
     case roomActions.SET_GUITAR_CHORD:
-      console.log("Updating Guitar Chord in store... " + action.guitarChord);
+      // console.log("Updating Guitar Chord in store... " + action.guitarChord);
       return {
         ...state,
         guitarChord: action.guitarChord,

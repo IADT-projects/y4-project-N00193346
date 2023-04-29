@@ -15,6 +15,12 @@ let socket = null;
 export const connectWithSocketServer = (userDetails) => {
   const jwtToken = userDetails.token;
 
+  // socket = io("http://localhost:5002/", {
+  //   auth: {
+  //     token: jwtToken,
+  //   },
+  // });
+
   socket = io("https://intelligenttest.herokuapp.com/", {
     auth: {
       token: jwtToken,
@@ -105,6 +111,6 @@ export const signalPeerData = (data) => {
   socket.emit("conn-signal", data);
 };
 
-export const receiveChord = (data) => {
-  socket.emit("receiveChord", data);
+export const receiveChord = (data, remoteUsers) => {
+  socket.emit("receiveChord", { data, remoteUsers });
 };

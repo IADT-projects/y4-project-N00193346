@@ -19,7 +19,6 @@ function ChordDetect({ onChord }) {
       const audioContext = new AudioContext();
       const guitar = store.getState().room.guitarStream;
 
-      console.log("Guitar in Spec: " + guitar);
       const guitarStream = guitar.mediaStream;
 
       if (guitarStream) {
@@ -60,7 +59,7 @@ function ChordDetect({ onChord }) {
       "Content-Type": "application/octet-stream",
     };
 
-    console.log("Sending request", { url, headers, file });
+    // console.log("Sending request", { url, headers, file });
 
     fetch(url, {
       method: "POST",
@@ -71,7 +70,12 @@ function ChordDetect({ onChord }) {
       .then((result) => {
         console.log("Received response", result);
         setPrediction(`Prediction: ${result.predictions[0].tagName}`);
-        receiveChord(`${result.predictions[0].tagName}`);
+
+        const remoteStreams = store.getState().room.remoteStreams;
+        const socketIds = remoteStreams.map(
+          (stream) => stream.connUserSocketId
+        );
+        receiveChord(`${result.predictions[0].tagName}`, socketIds);
       })
       .catch((error) => setPrediction("Error: " + error.message));
   }
