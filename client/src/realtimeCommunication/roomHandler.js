@@ -5,6 +5,7 @@ import {
   setActiveRooms,
   setLocalStream,
   setRemoteStreams,
+  setGuitarChord,
   setScreenSharingStream,
   setIsUserJoinedOnlyWithAudio,
 } from "../store/actions/roomActions";
@@ -95,6 +96,8 @@ export const leaveRoom = () => {
 
   // Set remote streams to empty array
   store.dispatch(setRemoteStreams([]));
+  // Set guitar chord to null
+  store.dispatch(setGuitarChord(null));
   // Close peer connections
   webRTCHandler.closeAllConnections();
 
