@@ -8,9 +8,9 @@ const MainContainer = styled("div")({
 });
 
 const VideoEl = styled("video")(({ isLocalStream }) => ({
-  width: isLocalStream ? "300px" : "100%",
-  height: isLocalStream ? "300px" : "100%",
-  objectFit: "cover",
+  width: isLocalStream ? "350px" : "100%",
+  height: isLocalStream ? "350px" : "100%",
+  objectFit: "contain",
   border: isLocalStream ? "5px solid blue" : "none",
 
   "@media (max-width: 1000px)": {

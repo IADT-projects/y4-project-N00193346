@@ -8,7 +8,7 @@ import E from "./ChordImages/E.png";
 
 function ChordDisplay(props) {
   const { guitarChord } = props;
-  const [chordImage, setChordImage] = useState(G);
+  const [chordImage, setChordImage] = useState(null);
 
   useEffect(() => {
     if (guitarChord === "G") {
@@ -34,8 +34,10 @@ function ChordDisplay(props) {
           alt="Chord"
           style={{
             width: "100%",
-            maxWidth: "500px",
+            maxWidth: "300px",
             height: "auto",
+            marginRight: "50px",
+            marginBottom: "50px",
           }}
         />
       )}

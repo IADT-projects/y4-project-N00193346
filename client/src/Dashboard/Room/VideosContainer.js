@@ -12,7 +12,7 @@ const MainContainer = styled("div")({
 
 const VideoWrapper = styled("div")({
   position: "absolute",
-  top: "15%",
+  top: 0,
   left: "22%",
   width: "100%",
   height: "100%",
@@ -21,7 +21,7 @@ const VideoWrapper = styled("div")({
 const LocalVideoWrapper = styled("div")({
   position: "absolute",
   bottom: "10%",
-  left: "5%",
+  left: 20,
 
   zIndex: 1,
 });

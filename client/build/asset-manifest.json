@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.e6c13ad2.css",
-    "main.js": "/static/js/main.87a834dd.js",
+    "main.js": "/static/js/main.14a46783.js",
     "static/media/guitar.jpg": "/static/media/guitar.2b6c4997c70c92bbd177.jpg",
     "static/media/guitar2.jpg": "/static/media/guitar2.92af6507ebb28b8b5bc1.jpg",
     "static/media/ampTexture.PNG": "/static/media/ampTexture.323e46d622eb022112d4.PNG",
@@ -13,10 +13,10 @@
     "static/media/A.png": "/static/media/A.7438ba78e4cdff98173b.png",
     "index.html": "/index.html",
     "main.e6c13ad2.css.map": "/static/css/main.e6c13ad2.css.map",
-    "main.87a834dd.js.map": "/static/js/main.87a834dd.js.map"
+    "main.14a46783.js.map": "/static/js/main.14a46783.js.map"
   },
   "entrypoints": [
     "static/css/main.e6c13ad2.css",
-    "static/js/main.87a834dd.js"
+    "static/js/main.14a46783.js"
   ]
 }
