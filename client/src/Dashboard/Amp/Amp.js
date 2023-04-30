@@ -19,21 +19,23 @@ export const Container = styled.div`
 
   gap: 5px 10px;
   background-color: #b2a89b;
-  margin-top: -15px;
+  margin-top: -10px;
 `;
 
 export const AmpContainer = styled.div`
   height: 90%;
-  width: 50%;
-  border-radius: 10px;
+  width: 40rem;
+  border-radius: 1rem;
   border: 20px solid #000000;
   box-sizing: border-box;
   background-image: url(${ampTexture});
   background-repeat: repeat;
   display: flex;
   justify-content: center;
-  align-items: center;
+  /* align-items: center; */
   position: relative;
+  margin-top: 1rem;
+  padding-top: 1rem;
 
   @font-face {
     font-family: "Amplifier";
@@ -47,7 +49,7 @@ export const AmpContainer = styled.div`
 `;
 
 export const AmpControls = styled.div`
-  height: 30%;
+  height: 40%;
   width: 100%;
   background-color: #e6c375;
   border-top: 5px solid #000000;
@@ -61,21 +63,21 @@ export const AmpControls = styled.div`
 
 export const SwitchContainer = styled.div`
   height: 80%;
-  width: 30px;
+  width: 2rem;
   border-top: 1px solid #000000;
   background-color: black;
-  margin: 10px;
+  margin: 1rem;
 `;
 
 export const SwitchOff = styled.div`
-  height: 60%;
+  height: 70%;
   margin: 5px;
   background-color: red;
   border-bottom: 3px solid #8b0000;
 `;
 
 export const SwitchOn = styled.div`
-  height: 60%;
+  height: 70%;
   margin: 5px;
   background-color: red;
   border-top: 3px solid #8b0000;

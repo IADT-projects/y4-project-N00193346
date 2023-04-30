@@ -4,8 +4,8 @@ import CallSettings from "./CallSettings";
 
 const additionalStyles = {
   marginLeft: "5px",
-  width: "20%",
-  height: "30px",
+  width: "10rem",
+  height: "2rem",
   background: "#1A71FF",
 };
 

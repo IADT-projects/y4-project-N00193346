@@ -12,24 +12,24 @@ export const Container = styled.div`
 `;
 
 export const RangeLabel = styled.label`
-  font-size: 10px;
+  font-size: 14px;
   font-weight: 700;
   color: black;
 `;
 
 export const KnobContainer = styled.div`
   position: relative;
-  width: 20px;
-  height: 20px;
+  width: 30px;
+  height: 30px;
   margin-top: 2px;
   background-color: #e6c375;
   border-radius: 50%;
-  border: 2px solid #000000;
+  border: 3px solid #000000;
 `;
 
 export const KnobMarker = styled.div`
-  width: 1px;
-  height: 8px;
+  width: 3px;
+  height: 12px;
   background-color: black;
   position: absolute;
   top: 50%;
