@@ -6,7 +6,7 @@ const MainPageButton = () => {
   return (
     <Button
       style={{
-        width: "48px",
+        width: "60px",
         height: "48px",
         borderRadius: "16px",
         margin: 0,

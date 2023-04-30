@@ -1,9 +1,10 @@
 import React from "react";
 import { styled } from "@mui/system";
-import MainPageButton from "./MainPageButton";
+
 import CreateRoomButton from "./CreateRoomButton";
 import { connect } from "react-redux";
 import ActiveRoomButton from "./ActiveRoomButton";
+import RoomTitle from "./RoomTitle";
 
 const MainContainer = styled("div")({
   width: "72px",
@@ -19,7 +20,7 @@ const MainContainer = styled("div")({
 const SideBar = ({ activeRooms, isUserInRoom }) => {
   return (
     <MainContainer>
-      <MainPageButton />
+      <RoomTitle title="Rooms" />
       <CreateRoomButton isUserInRoom={isUserInRoom} />
       {activeRooms.map((room) => (
         <ActiveRoomButton
