@@ -12,15 +12,18 @@ const MainContainer = styled("div")({
 
 const VideoWrapper = styled("div")({
   position: "absolute",
-  top: 0,
-  left: "50%",
-  transform: "translateX(-50%)",
+  top: "15%",
+  left: "22%",
+  width: "100%",
+  height: "100%",
 });
 
 const LocalVideoWrapper = styled("div")({
   position: "absolute",
-  bottom: 0,
-  left: 0,
+  bottom: "10%",
+  left: "5%",
+
+  zIndex: 1,
 });
 
 const ChordDisplayWrapper = styled("div")({
@@ -29,6 +32,8 @@ const ChordDisplayWrapper = styled("div")({
   alignItems: "flex-end",
   width: "100%",
   height: "100%",
+  marginRight: "20px",
+  zIndex: 2,
 });
 
 const VideosContainer = ({
@@ -71,7 +76,7 @@ const VideosContainer = ({
         </VideoWrapper>
       )}
       <ChordDisplayWrapper>
-        <ChordDisplay />
+        <ChordDisplay style={{ zIndex: 2 }} />
       </ChordDisplayWrapper>
     </MainContainer>
   );

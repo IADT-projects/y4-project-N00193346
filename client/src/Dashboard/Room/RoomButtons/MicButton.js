@@ -12,7 +12,10 @@ const MicButton = ({ localStream }) => {
   };
 
   return (
-    <IconButton onClick={handleToggleMic} style={{ color: "white" }}>
+    <IconButton
+      onClick={handleToggleMic}
+      style={{ color: "white", fontSize: "24px" }}
+    >
       {micEnabled ? <MicIcon /> : <MicOffIcon />}
     </IconButton>
   );

@@ -24,9 +24,11 @@ const RoomButtons = (props) => {
   return (
     <MainContainer>
       {!isUserJoinedWithOnlyAudio && <ScreenShareButton {...props} />}
-      <MicButton localStream={localStream} />
-      <CloseRoomButton />
+
+      <MicButton localStream={localStream} style={{ fontSize: "36px" }} />
+
       {!isUserJoinedWithOnlyAudio && <CameraButton localStream={localStream} />}
+      <CloseRoomButton style={{ fontSize: 60 }} />
     </MainContainer>
   );
 };
