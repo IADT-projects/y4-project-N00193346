@@ -5,10 +5,11 @@ import A from "./ChordImages/A.png";
 import D from "./ChordImages/D.png";
 import C from "./ChordImages/C.png";
 import E from "./ChordImages/E.png";
+import { GlobalStyles } from "@mui/material";
 
 function ChordDisplay(props) {
   const { guitarChord } = props;
-  const [chordImage, setChordImage] = useState(G);
+  const [chordImage, setChordImage] = useState(GlobalStyles);
 
   useEffect(() => {
     if (guitarChord === "G") {

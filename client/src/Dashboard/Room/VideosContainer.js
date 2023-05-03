@@ -11,23 +11,25 @@ const MainContainer = styled("div")({
   overflow: "hidden",
 });
 
-const VideoWrapper = styled("div")({
+const VideoWrapper = styled("div")(({ isRoomMinimized }) => ({
   position: "absolute",
-  marginLeft: "auto",
-  marginRight: "auto",
-  left: "30vw",
-  top: "10vh",
-  right: 0,
-});
 
-const LocalVideoWrapper = styled("div")({
+  left: isRoomMinimized ? "0px" : "30vw",
+  top: isRoomMinimized ? "0" : "10vh",
+  right: isRoomMinimized ? "0px" : "0",
+  width: isRoomMinimized ? "200%" : "initial",
+  height: isRoomMinimized ? "90%" : "initial",
+}));
+
+const LocalVideoWrapper = styled("div")(({ isRoomMinimized }) => ({
   position: "absolute",
   bottom: "5%",
   left: 20,
   zIndex: 1,
-});
+  visibility: isRoomMinimized ? "hidden" : "visible",
+}));
 
-const ChordDisplayWrapper = styled("div")({
+const ChordDisplayWrapper = styled("div")(({ isRoomMinimized }) => ({
   display: "flex",
   justifyContent: "flex-end",
   alignItems: "flex-end",
@@ -35,7 +37,8 @@ const ChordDisplayWrapper = styled("div")({
   height: "100%",
   marginRight: "20px",
   zIndex: 2,
-});
+  visibility: isRoomMinimized ? "hidden" : "visible",
+}));
 
 const VideosContainer = ({
   localStream,
@@ -62,13 +65,13 @@ const VideosContainer = ({
 
   return (
     <MainContainer>
-      <VideoWrapper>
+      <VideoWrapper isRoomMinimized={isRoomMinimized}>
         {remoteStreams.map((stream) => (
           <Video stream={stream} key={stream.id} />
         ))}
       </VideoWrapper>
       {localStream && (
-        <LocalVideoWrapper>
+        <LocalVideoWrapper isRoomMinimized={isRoomMinimized}>
           <Video stream={localStream} isLocalStream />
         </LocalVideoWrapper>
       )}
@@ -77,7 +80,7 @@ const VideosContainer = ({
           <Video stream={screenSharingStream} isLocalStream />
         </VideoWrapper>
       )}
-      <ChordDisplayWrapper>
+      <ChordDisplayWrapper isRoomMinimized={isRoomMinimized}>
         <ChordDisplay style={{ zIndex: 2 }} />
       </ChordDisplayWrapper>
     </MainContainer>
