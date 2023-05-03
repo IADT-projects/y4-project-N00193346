@@ -20,10 +20,10 @@ const fullScreenRoomStyle = {
 };
 
 const minimizedRoomStyle = {
-  bottom: "0px",
+  bottom: "20vh",
   right: "0px",
-  width: "30%",
-  height: "40vh",
+  width: "20%",
+  height: "30%",
 };
 
 const Room = () => {
@@ -37,7 +37,7 @@ const Room = () => {
     <MainContainer
       style={isRoomMinimized ? minimizedRoomStyle : fullScreenRoomStyle}
     >
-      <VideosContainer />
+      <VideosContainer isRoomMinimized={isRoomMinimized} />
       <RoomButtons />
       <ResizeRoomButton
         isRoomMinimized={isRoomMinimized}

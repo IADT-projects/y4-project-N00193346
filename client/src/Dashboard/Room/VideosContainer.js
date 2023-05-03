@@ -8,21 +8,22 @@ const MainContainer = styled("div")({
   position: "relative",
   width: "100%",
   height: "100%",
+  overflow: "hidden",
 });
 
 const VideoWrapper = styled("div")({
   position: "absolute",
-  top: 0,
-  left: "22%",
-  width: "100%",
-  height: "100%",
+  marginLeft: "auto",
+  marginRight: "auto",
+  left: "30vw",
+  top: "10vh",
+  right: 0,
 });
 
 const LocalVideoWrapper = styled("div")({
   position: "absolute",
-  bottom: "10%",
+  bottom: "5%",
   left: 20,
-
   zIndex: 1,
 });
 
@@ -40,6 +41,7 @@ const VideosContainer = ({
   localStream,
   remoteStreams,
   screenSharingStream,
+  isRoomMinimized,
 }) => {
   const countVideoTracks = (stream) => {
     let videoTracksCount = 0;
